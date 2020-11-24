@@ -32,11 +32,41 @@ class ReportesUsuario (models.Model):
     )
 
     ESTADOS = (
-        ('Reportado','Reportado'),
-        ('En reparación', 'En reparación'),
-        ('Reparado', 'Reparado')
+        ('Nuevo','Nuevo'),
+        ('En proceso', 'En proceso'),
+        ('Monitoreado', 'Monitoreado'),
+        ('Atendido', 'Atendido')
     )
-    tipo = models.CharField(max_length = 45)
+
+    TIPOS = [
+        ('Zona', (
+                ('Nuevos desarrollos','Nuevos desarrollos'),
+                ('Urbana', 'Urbana'),
+                ('Conurbada', 'Conurbada'),
+            )
+        ),
+        ('Anomalia', (
+                 ('Falta de agua','Falta de agua'),
+                 ('Falta de presion', 'Falta de presion'),
+                 ('Fuga en la red Hidraulica', 'Fuga en la red Hidraulica'),
+                 ('Fuga en la toma','Fuga en la toma'),
+                 ('Inspeccion', 'Inspeccion'),
+                 ('Material listo', 'Material listo'),
+                 ('Toma obstruida','Toma obstruida'),
+                 ('Toma desconectada', 'Toma desconectada'),
+                 ('Desazolve', 'Desazolve'),
+            )
+        ),
+        ('Servicio', (
+                ('Agua potable','Agua potable'),
+                ('Pipas', 'Pipas'),
+                ('Alcantarillado', 'Alcantarillado')
+            )
+        ),  
+    ]
+
+    tipo = models.CharField(max_length = 40, choices=TIPOS, default= TIPOS)
+    folio_seguimiento = models.CharField(max_length = 50, blank = True)
     foto = models.CharField(max_length = 50)
     prioridad = models.CharField(max_length = 20, choices=PRIORIDAD, default= PRIORIDAD)
     geoLocalizacion = models.CharField(max_length = 100)
@@ -59,14 +89,43 @@ class ReportesEmpleado (models.Model):
     )
 
     ESTADOS = (
-        ('Reportado','Reportado'),
-        ('En reparación', 'En reparación'),
-        ('Reparado', 'Reparado')
+        ('Nuevo','Nuevo'),
+        ('En proceso', 'En proceso'),
+        ('Monitoreado', 'Monitoreado'),
+        ('Atendido', 'Atendido')
     )
+
+    TIPOS = [
+        ('Zona', (
+                ('Nuevos desarrollos','Nuevos desarrollos'),
+                ('Urbana', 'Urbana'),
+                ('Conurbada', 'Conurbada'),
+            )
+        ),
+        ('Anomalia', (
+                 ('Falta de agua','Falta de agua'),
+                 ('Falta de presion', 'Falta de presion'),
+                 ('Fuga en la red Hidraulica', 'Fuga en la red Hidraulica'),
+                 ('Fuga en la toma','Fuga en la toma'),
+                 ('Inspeccion', 'Inspeccion'),
+                 ('Material listo', 'Material listo'),
+                 ('Toma obstruida','Toma obstruida'),
+                 ('Toma desconectada', 'Toma desconectada'),
+                 ('Desazolve', 'Desazolve'),
+            )
+        ),
+        ('Servicio', (
+                ('Agua potable','Agua potable'),
+                ('Pipas', 'Pipas'),
+                ('Alcantarillado', 'Alcantarillado')
+            )
+        ),  
+    ]
     # la fecha de inicio se cambiará el auto_now_add
     fecha_inicio = models.DateTimeField(auto_now_add = True)
     fecha_fin = models.DateTimeField(auto_now_add = True)
-    tipo = models.CharField(max_length = 45)
+    tipo = models.CharField(max_length = 40, choices=TIPOS, default= TIPOS)
+    folio_seguimiento = models.CharField(max_length = 50, blank = True)
     foto = models.CharField(max_length = 50)
     prioridad = models.CharField(max_length = 20, choices=PRIORIDAD, default= PRIORIDAD)
     descripcion = models.CharField(max_length = 200)

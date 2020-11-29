@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes usuarios</title>
+</head>
+<body>
+    {% if reportesU %}
+    <table border="1">
+        <tr>
+            <th>Folio de seguimiento</th>
+            <th>Tipo de anomalía</th>
+            <th>Tipo de servicio</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Foto</th>
+            <th>Prioridad</th>
+            <th>Botón detalles</th>
+        </tr>
+        {% for reportes in reportesU %}
+        <tr>
+            <td>{{ reportes.folio_seguimiento }}</td>
+            <td>{{ reportes.tipo_anomalia }}</td>
+            <td>{{ reportes.tipo_servicio }}</td>
+            <td>{{ reportes.descripcion }}</td>
+            <td>{{ reportes.estado }}</td>
+            <td>{{ reportes.fecha }}</td>
+            <td>{{ reportes.id_usuario }}</td>
+            <td>{{ reportes.foto }}</td>
+            <td>{{ reportes.prioridad }}</td>            
+            <td>botón</td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+    <p> No hay reportes </p>
+    {% endif %}
+
+
+</body>
+</html>

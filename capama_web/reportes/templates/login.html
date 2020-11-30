@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>  
+	<title>CAPAMA| servicio de agua potable y saneamiento de Acapulco, Guerrero.</title>			
+</head>
+<body>
+	<header>
+	<br>
+	<h1 style="color: rgb(22, 78, 231);">Bienvenido al sistema de reporte de fugas de agua</h1>
+	<br>
+	</header>
+
+	<center>
+		{% if errores %}
+			<ul style="margin-top: 10px;">
+			{% for error in errores %}
+				<li style="color: red;">{{ error }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</center>
+
+	<div class="Login">
+
+	<form method="post" action="/login/">{% csrf_token %}
+		<!--WEno por si pasa algo malo con el usuario agregar el siguiente código despues del div 
+		id="form-input"
+		-->
+			<div class="fas fa-user">
+				<input  type="text" name="usuario" placeholder="Usuario">
+			</div>
+			<div class="fas fa-key">
+				<input type="password" name="password" placeholder="Contraseña">
+			</div>
+			<div>
+				<input type="submit" name="entrar" value="Enviar" class="b_login">
+			</div>
+	</form>
+	</div>
+	
+</body>
+</html>

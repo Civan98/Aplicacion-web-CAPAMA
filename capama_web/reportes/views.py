@@ -33,9 +33,9 @@ def login(request):
         if not errores:
             try:
                 #obtenemos los datos del usuario desde la BD
-                validar = Empleados.objects.get(nombre = request.POST['usuario'])
+                validar = Empleados.objects.get(email = request.POST['usuario'])
             except Empleados.DoesNotExist:
-                errores.append('¡El nombre de empleado no existe!')
+                errores.append('¡El de empleado no existe!')
             else:
                 if validar.contrasena == request.POST['password']:
                     request.session['member_id'] = validar.id

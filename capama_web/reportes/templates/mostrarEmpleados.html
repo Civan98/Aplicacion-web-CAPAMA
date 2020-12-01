@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleados</title>
+</head>
+<body>
+    {% if empleados %}
+    <table border="1">
+        <tr>
+            <th>Número de empleado</th>
+            <th>Nombre completo</th>
+            <th>Email</th>
+            <th>Cargo</th>
+            <th>Colonia</th>
+            <th>Calle</th>
+            <th>Código Postal</th>
+            <th>Contraseña</th>
+            <th>Botón Modificar</th>
+        </tr>
+        {% for datos in empleados %}
+        <tr>
+            <td>{{ datos.num_empleado }}</td>
+            <td>{{ datos.nombre }} {{datos.apellidos}} </td>
+            <td>{{ datos.email }}</td>
+            <td>{{ datos.telefono }}</td>
+            <td>{{ datos.colonia }}</td>
+            <td>{{ datos.calle }}</td>
+            <td>{{ datos.cp }}</td>
+            <td>{{ datos.contrasena }}</td>                       
+            <td> 
+                <a href="/modificarEmpleados/{{ datos.id}}">
+                    <input type="submit" value="Modificar">
+                </a>
+            </td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+    <p> No hay Empleados </p>
+    {% endif %}
+
+
+</body>
+</html>

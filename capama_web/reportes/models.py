@@ -2,12 +2,15 @@ from django.db import models
 
 # Create your models here.
 class Usuarios(models.Model):
-    nombre = models.CharField(max_length = 45)
-    apellidos = models.CharField(max_length = 45)
-    email = models.EmailField()
-    contrasena = models.CharField(max_length = 45)
-    num_contrato = models.CharField(max_length = 45)
-    telefono = models.CharField(max_length = 10)
+    nombre = models.CharField(max_length = 45, verbose_name='Nombre')
+    apellidos = models.CharField(max_length = 45, verbose_name= 'Apellidos')
+    email = models.EmailField(verbose_name='Email')
+    contrasena = models.CharField(max_length = 45, verbose_name='Contraseña')
+    num_contrato = models.CharField(max_length = 45, verbose_name= 'Número de contrato')
+    telefono = models.CharField(max_length = 10, verbose_name= 'Teléfono')
+    colonia = models.CharField(max_length=45, verbose_name='Colonia', blank= True )
+    calle = models.CharField(max_length=45, verbose_name='Calle', blank= True)
+    cp = models.IntegerField(verbose_name='Código Postal', blank= True, default=00000)
     
     # para mostrar en el sitio de administración la llave foránea, pero de forma más detallada
     # también para que al mostrar la tabla, se muestren los registros de forma detallada
@@ -27,13 +30,16 @@ class Empleados(models.Model):
         ('Sobrestante', 'Sobrestante'),
     )
 
-    nombre = models.CharField(max_length = 45)
-    apellidos = models.CharField(max_length = 45)
-    email = models.EmailField()
-    contrasena = models.CharField(max_length = 45)
-    telefono = models.CharField(max_length = 10)
-    cargo = models.CharField(max_length=20, choices = CARGOS, default= CARGOS)
-    num_empleado = models.CharField(max_length = 45)
+    nombre = models.CharField(max_length = 45, verbose_name='Nombre')
+    apellidos = models.CharField(max_length = 45, verbose_name='Apellidos')
+    email = models.EmailField(verbose_name='Email')
+    contrasena = models.CharField(max_length = 45, verbose_name='Contraseña')
+    telefono = models.CharField(max_length = 10, verbose_name='Teléfono')
+    cargo = models.CharField(max_length=20, choices = CARGOS, default= CARGOS, verbose_name='Cargo')
+    num_empleado = models.CharField(max_length = 45, verbose_name='Número de empleado')
+    colonia = models.CharField(max_length=45, verbose_name='Colonia', blank= True)
+    calle = models.CharField(max_length=45, verbose_name='Calle', blank= True,)
+    cp = models.IntegerField(verbose_name='Código Postal', blank= True, default=00000)
 
 
     def __str__(self):

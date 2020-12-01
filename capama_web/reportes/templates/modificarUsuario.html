@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Usuario</title>
+</head>
+<body>
+    {% if error %}
+    <p> {{error}} </p>
+    {% endif %}
+    <form action="" method="post" style=" border: 1px dotted #999;">
+        {% csrf_token %} 
+        {{datosNuevos}}
+        <input type="submit" value="Modificar">        
+    </form>
+    <a href="/mostrarUsuarios/">
+        <input type="submit" value="Cancelar">
+     </a>
+</body>
+</html>

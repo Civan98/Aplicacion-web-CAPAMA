@@ -12,11 +12,14 @@
             <th>Número de empleado</th>
             <th>Nombre completo</th>
             <th>Email</th>
+            <th>Telefono</th>
+            <th>Zona</th>
             <th>Cargo</th>
             <th>Colonia</th>
             <th>Calle</th>
             <th>Código Postal</th>
             <th>Contraseña</th>
+            <th>Disponibilidad</th>
             <th>Botón Modificar</th>
         </tr>
         {% for datos in empleados %}
@@ -25,10 +28,13 @@
             <td>{{ datos.nombre }} {{datos.apellidos}} </td>
             <td>{{ datos.email }}</td>
             <td>{{ datos.telefono }}</td>
+            <td>{{ datos.zona }}</td>
+            <td>{{ datos.cargo }}</td>
             <td>{{ datos.colonia }}</td>
             <td>{{ datos.calle }}</td>
             <td>{{ datos.cp }}</td>
             <td>{{ datos.contrasena }}</td>                       
+            <td>{{ datos.disponibilidad }}</td>                       
             <td> 
                 <a href="/modificarEmpleados/{{ datos.id}}">
                     <input type="submit" value="Modificar">

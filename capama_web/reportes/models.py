@@ -8,8 +8,8 @@ class Usuarios(models.Model):
     contrasena = models.CharField(max_length = 45, verbose_name='Contraseña')
     num_contrato = models.CharField(max_length = 45, verbose_name= 'Número de contrato')
     telefono = models.CharField(max_length = 10, verbose_name= 'Teléfono')
-    colonia = models.CharField(max_length=45, verbose_name='Colonia', blank= True )
-    calle = models.CharField(max_length=45, verbose_name='Calle', blank= True)
+    colonia = models.CharField(max_length=45, verbose_name='Colonia')
+    calle = models.CharField(max_length=45, verbose_name='Calle')
     cp = models.IntegerField(verbose_name='Código Postal', blank= True, default=00000)
     
     # para mostrar en el sitio de administración la llave foránea, pero de forma más detallada
@@ -17,7 +17,7 @@ class Usuarios(models.Model):
     # el id marca error porque no está definido aquí en el modelo, pero este se asignó de forma automática
 
     def __str__(self):
-        return ("%d.- %s %s" % ( self.id, self.nombre, self.apellidos))
+        return ("%s %s" % (self.nombre, self.apellidos))
     
     
     class Meta:
@@ -29,7 +29,15 @@ class Empleados(models.Model):
         ('Administrador', 'Administrador'),
         ('Sobrestante', 'Sobrestante'),
     )
-
+    ZONA = (        
+        ('Nuevos desarrollos','Nuevos desarrollos'),
+        ('Urbana', 'Urbana'),
+        ('Conurbada', 'Conurbada')
+    )
+    DISPONIBLE =(
+        ('Disponible','Disponible'),
+        ('En fuga','En fuga')
+    )
     nombre = models.CharField(max_length = 45, verbose_name='Nombre')
     apellidos = models.CharField(max_length = 45, verbose_name='Apellidos')
     email = models.EmailField(verbose_name='Email')
@@ -37,9 +45,11 @@ class Empleados(models.Model):
     telefono = models.CharField(max_length = 10, verbose_name='Teléfono')
     cargo = models.CharField(max_length=20, choices = CARGOS, default= CARGOS, verbose_name='Cargo')
     num_empleado = models.CharField(max_length = 45, verbose_name='Número de empleado')
-    colonia = models.CharField(max_length=45, verbose_name='Colonia', blank= True)
-    calle = models.CharField(max_length=45, verbose_name='Calle', blank= True,)
+    colonia = models.CharField(max_length=45, verbose_name='Colonia')
+    calle = models.CharField(max_length=45, verbose_name='Calle')
     cp = models.IntegerField(verbose_name='Código Postal', blank= True, default=00000)
+    zona = models.CharField(max_length = 50, choices=ZONA, default= ZONA )
+    disponibilidad = models.TextField(max_length=50, choices=DISPONIBLE, default='Disponible')
 
 
     def __str__(self):
@@ -88,23 +98,24 @@ class ReportesUsuario (models.Model):
     zona = models.CharField(max_length = 50, choices=ZONA, default= ZONA )
     tipo_anomalia = models.CharField(max_length = 50, choices=TIPOANOMALIA, default= TIPOANOMALIA)
     tipo_servicio = models.CharField(max_length = 50, choices=TIPOSERVICIO, default= TIPOSERVICIO)
-    folio_seguimiento = models.CharField(max_length = 50, blank = True)
+    folio_seguimiento = models.CharField(max_length = 50, unique=True)
     foto = models.CharField(max_length = 50)
     prioridad = models.CharField(max_length = 20, choices=PRIORIDAD, default= PRIORIDAD)
     geoLocalizacion = models.CharField(max_length = 100, verbose_name='Geolocalización')
     colonia = models.CharField(max_length = 50)
     calle = models.CharField(max_length = 50)
     cp = models.IntegerField(blank = True, verbose_name='código postal')
-    num_interior = models.IntegerField(blank = True)
-    num_exterior = models.IntegerField(blank = True)
+    num_interior = models.IntegerField(blank = True, default=0)
+    num_exterior = models.IntegerField(blank = True, default= 0)
     descripcion = models.CharField(max_length = 200)
     fecha = models.DateTimeField(auto_now_add = True)
     estado = models.CharField(max_length = 20, choices = ESTADOS, default=ESTADOS)
-    id_usuario = models.ForeignKey(Usuarios, on_delete= models.CASCADE)
+    id_usuario = models.ForeignKey(Usuarios, on_delete = models.CASCADE, verbose_name='Usuario')
+    id_empleado = models.ForeignKey(Empleados, on_delete = models.DO_NOTHING, blank= True, null=True, verbose_name='Empleado')
 
     # mostrar el folio de seguimiento
     def __str__(self):
-        return self.folio_seguimiento
+        return ("%d.- %s" % ( self.id, self.folio_seguimiento))
     
 
     class Meta:
@@ -151,7 +162,7 @@ class ReportesEmpleado (models.Model):
     zona = models.CharField(max_length = 40, choices=ZONA, default= ZONA)
     tipo_anomalia = models.CharField(max_length = 50, choices=TIPOANOMALIA, default= TIPOANOMALIA)
     tipo_servicio = models.CharField(max_length = 50, choices=TIPOSERVICIO, default= TIPOSERVICIO)
-    folio_seguimiento = models.CharField(max_length = 50, blank = True)
+    # folio_seguimiento = models.CharField(max_length = 50, unique=True)
     foto = models.CharField(max_length = 50)
     prioridad = models.CharField(max_length = 20, choices=PRIORIDAD, default= PRIORIDAD)
     descripcion = models.CharField(max_length = 200)
@@ -166,11 +177,12 @@ class ReportesEmpleado (models.Model):
     # fecha = models.DateTimeField(auto_now_add = True)
     estado = models.CharField(max_length = 20, choices = ESTADOS, default=ESTADOS)
     id_empleado = models.ForeignKey(Empleados, on_delete = models.CASCADE)
-    id_usuario = models.ForeignKey(Usuarios, on_delete = models.DO_NOTHING)
+    id_repoteUsuario = models.ForeignKey(ReportesUsuario, on_delete = models.DO_NOTHING)
+    # id_usuario = models.ForeignKey(Usuarios, on_delete = models.DO_NOTHING)
     
     # mostrar el folio de seguimiento
     def __str__(self):
-        return self.folio_seguimiento
+        return str(self.id_repoteUsuario)
     
     class Meta:
         verbose_name_plural= 'Reportes del empleado'

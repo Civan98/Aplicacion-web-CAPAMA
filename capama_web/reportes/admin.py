@@ -25,9 +25,9 @@ class ReportesUsuarioAdmin(admin.ModelAdmin):
 admin.site.register(ReportesUsuario, ReportesUsuarioAdmin)
 
 class ReportesEmpleadoAdmin(admin.ModelAdmin):
-    list_display = ('id','zona', 'folio_seguimiento','prioridad','fecha_inicio', 'estado', 'id_empleado')
+    list_display = ('id','zona','prioridad','fecha_inicio', 'estado', 'id_empleado')
     list_filter = ('prioridad', 'estado', 'id_empleado', 'zona','tipo_anomalia','tipo_servicio')
-    search_fields = ('folio_seguimiento','id_empleado__num_empleado')
+    search_fields = ('id_empleado__num_empleado', 'zona')
 
 admin.site.register(ReportesEmpleado, ReportesEmpleadoAdmin)
 

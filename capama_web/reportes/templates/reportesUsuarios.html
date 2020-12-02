@@ -7,8 +7,17 @@
     <title>Reportes usuarios</title>
 </head>
 <body>
-    <p>Bienvenido </p>
+    <p>Bienvenido {{ nomEmpleado }} </p>
     <a href="/logout/">Cerrar Sesión</a>
+
+    
+    {% if  cargo == 'Sobrestante' %}
+        <p>eres sobrestante we</p>
+
+    {% else %}
+        <p> eres admin we </p>
+    {% endif %}
+
 
     {% if reportesU %}
     <table border="1">

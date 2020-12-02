@@ -10,7 +10,6 @@
 	<br>
 	</header>
 
-	<center>
 		{% if errores %}
 			<ul style="margin-top: 10px;">
 			{% for error in errores %}
@@ -18,23 +17,17 @@
 			{% endfor %}
 			</ul>
 		{% endif %}
-	</center>
 
 	<div class="Login">
 
-	<form method="post" action="/login/">{% csrf_token %}
-		<!--WEno por si pasa algo malo con el usuario agregar el siguiente código despues del div 
-		id="form-input"
-		-->
-			<div class="fas fa-user">
-				<input  type="email" name="usuario" placeholder="Usuario">
-			</div>
-			<div class="fas fa-key">
-				<input type="password" name="password" placeholder="Contraseña">
-			</div>
+	<form method="POST" action="/login/">{% csrf_token %}
+			<table>
+				{{ form.as_table}}
+			</table>
+
 			<div>
-				<input type="submit" name="entrar" value="Enviar" class="b_login">
-			</div>
+				<input type="submit" name="entrar" value="Enviar">
+			</div> 
 	</form>
 	</div>
 	

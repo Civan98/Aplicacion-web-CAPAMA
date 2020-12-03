@@ -165,4 +165,3 @@ class DetallesReporteUsuarioForm(forms.ModelForm):
 #             'cp': forms.NumberInput(attrs={'placeholder':'ej. 39920'}),
 #             'num_contrato': forms.TextInput(attrs={'placeholder':'ej. 111-222-3333-1'})
 #         }
-

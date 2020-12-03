@@ -1,32 +1,13 @@
-from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from .models import Empleados, Materiales, ReportesEmpleado, ReportesUsuario, Usuarios
 from django.views.decorators.cache import cache_control
 from django.template import Template, Context
 from reportes.forms import FormLogin
-from django.shortcuts import render, redirect
-from .models import Empleados, Materiales, ReportesEmpleado, ReportesUsuario, Usuarios
 # importar el formulario del registro del usuario del archivo forms
 from .forms import UsuarioForm, EmpleadoForm, DetallesReporteUsuarioForm
 import re
 # Create your views here.
 
-#para desactivar la cache y evitar que el navegador guarde la pantalla anterior y la recarge como nueva
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def reportesUsuarios(request):
-    #para validar si hay una sesión activa
-    if 'member_id' in request.session:
-        #datos del empleado en session
-        empleado = Empleados.objects.get(id = request.session['member_id'])
-        nomEmpleado = empleado.nombre+' '+empleado.apellidos
-        cargo = empleado.cargo
-
-        reportesU = ReportesUsuario.objects.order_by('prioridad')
-        # print(reportesU.)
-        # cantidadReportesUsuario = reportesU.count()
-
-        return render(request, 'reportesUsuarios.html', {'reportesU':reportesU, 'nomEmpleado': nomEmpleado, 'cargo':cargo})
-
-    return HttpResponseRedirect('/login/')
     
 #para desactivar la cache y evitar que el navegador guarde la pantalla anterior y la recarge como nueva
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -69,11 +50,23 @@ def logout(request):
              pass
     return HttpResponseRedirect('/login/')
 
-    reportesU = ReportesUsuario.objects.all()
-    # print(reportesU)
-    # cantidadReportesUsuario = reportesU.count()
 
-    return render(request, 'reportes/reportesUsuarios.html', {'reportesU':reportesU})
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def reportesUsuarios(request):
+    #para validar si hay una sesión activa
+    if 'member_id' in request.session:
+        #datos del empleado en session
+        empleado = Empleados.objects.get(id = request.session['member_id'])
+        nomEmpleado = empleado.nombre+' '+empleado.apellidos
+        cargo = empleado.cargo
+
+        reportesU = ReportesUsuario.objects.order_by('prioridad')
+        # print(reportesU.)
+        # cantidadReportesUsuario = reportesU.count()
+
+        return render(request, 'reportes/reportesUsuarios.html', {'reportesU':reportesU 'nomEmpleado': nomEmpleado, 'cargo':cargo})
+    return HttpResponseRedirect('/login/')
 
 def registrarUsuario(request):
     # datosObtenidos = UsuarioForm()
@@ -451,4 +444,3 @@ def detallesReporteUsuario(request, idReporte):
 # def reportesEmpleado(request):
 #     reportesU = ReportesUsuario.objects.all()
 #     return render(request, 'reportesUsuarios.html', {'reportesUsuario':reportesU})
-

@@ -43,6 +43,23 @@
     <p> No hay Usuarios </p>
     {% endif %}
 
+    <div class="pagination">
+        <span class="step-links">
+            {% if usuarios.has_previous %}
+                <a href="?page=1">&laquo; Primera Página</a>
+                <a href="?page={{ usuarios.previous_page_number }}">Anterior</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ usuarios.number }} of {{ usuarios.paginator.num_pages }}.
+            </span>
+    
+            {% if usuarios.has_next %}
+                <a href="?page={{ usuarios.next_page_number }}">Siguiente</a>
+                <a href="?page={{ usuarios.paginator.num_pages }}">Última Página &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 
 </body>
 </html>

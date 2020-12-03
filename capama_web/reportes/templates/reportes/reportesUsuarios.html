@@ -61,6 +61,24 @@
     <p> No hay reportes de usuarios </p>
     {% endif %}
 
+    <div class="pagination">
+        <span class="step-links">
+            {% if reportesU.has_previous %}
+                <a href="?page=1">&laquo; Primera Página</a>
+                <a href="?page={{ reportesU.previous_page_number }}">Anterior</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ reportesU.number }} of {{ reportesU.paginator.num_pages }}.
+            </span>
+    
+            {% if reportesU.has_next %}
+                <a href="?page={{ reportesU.next_page_number }}">Siguiente</a>
+                <a href="?page={{ reportesU.paginator.num_pages }}">Última Página &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
 
 </body>
 </html>

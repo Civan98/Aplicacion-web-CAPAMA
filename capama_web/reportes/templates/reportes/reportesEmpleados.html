@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes Usuarios</title>
+</head>
+<body>
+    {% if reportesUsuario %}
+    <table border="1">
+        <tr>
+            <th>Folio de seguimiento</th>
+            <th>Tipo de anomalía</th>
+            <th>Tipo de servicio</th>
+            <th>Dirección</th>
+            <th>Zona</th>
+            <th>Fecha</th>
+            <th>Descripción</th>
+            <th>Foto</th>
+            <th>Prioridad</th>
+            <th>Estado</th>
+        </tr>
+        {% for datos in reportesUsuario %}
+        <tr>
+            <td>{{ datos.folio_seguimiento }}</td>
+            <td>{{ datos.tipo_anomalia }}</td>
+            <td>{{ datos.tipo_servicio }}</td>
+            <td>Colonia: {{ datos.colonia }}, Calle: {{ datos.calle }}, No. interior: {{ datos.num_interior }}, No. exterior: {{ datos.num_exterior}} </td>
+            <td>{{ datos.zona }}</td>
+            <td>{{ datos.fecha }}</td>
+            <td>{{ datos.descripcion }}</td>
+            <td>{{ datos.foto }}</td>                       
+            <td>{{ datos.prioridad }}</td>                       
+            <td> 
+                <a href="/modificarUsuarios/{{ datos.id}}">
+                    <input type="submit" value="Modificar">
+                </a>
+            </td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+    <p> No hay reportes </p>
+    {% endif %}
+
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes Usuarios</title>
+</head>
+<body>
+    {% if reportesUsuario %}
+    <table border="1">
+        <tr>
+            <th>Folio de seguimiento</th>
+            <th>Tipo de anomalía</th>
+            <th>Tipo de servicio</th>
+            <th>Dirección</th>
+            <th>Zona</th>
+            <th>Fecha</th>
+            <th>Descripción</th>
+            <th>Foto</th>
+            <th>Prioridad</th>
+            <th>Estado</th>
+        </tr>
+        {% for datos in reportesUsuario %}
+        <tr>
+            <td>{{ datos.folio_seguimiento }}</td>
+            <td>{{ datos.tipo_anomalia }}</td>
+            <td>{{ datos.tipo_servicio }}</td>
+            <td>Colonia: {{ datos.colonia }}, Calle: {{ datos.calle }}, No. interior: {{ datos.num_interior }}, No. exterior: {{ datos.num_exterior}} </td>
+            <td>{{ datos.zona }}</td>
+            <td>{{ datos.fecha }}</td>
+            <td>{{ datos.descripcion }}</td>
+            <td>{{ datos.foto }}</td>                       
+            <td>{{ datos.prioridad }}</td>                       
+            <td>{{ datos.estado }}</td>                       
+            <td> 
+                {% comment %} <a href="/modificarUsuarios/{{ datos.id}}">
+                    <input type="submit" value="Modificar">
+                </a> {% endcomment %}
+            </td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+    <p> No hay reportes </p>
+    {% endif %}
+
+
+</body>
+</html>

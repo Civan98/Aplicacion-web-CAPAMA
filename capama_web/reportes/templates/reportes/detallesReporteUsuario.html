@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del reporte de usuario</title>
+</head>
+<body>
+    {% if error %}
+    <p> {{error}} </p>
+    {% endif %}
+    <form action="" method="post" style=" border: 1px dotted #999;">
+        {% csrf_token %} 
+        {{datosReporte}}
+        
+        <label for="selecEmpleado">Sobrestante Asignado: </label>
+        {% if sobrestante %}        
+        <select name="seleccionarSobrestante">
+            <!-- <option value="-" selected>NO ASIGNADO</option>     -->
+            {% if estado == 'Nuevo' %}
+                <option value="" selected>NO ASIGNADO</option> 
+                {% for empleado in sobrestante %}
+                    <option value="{{empleado.id}}">{{ empleado.nombre }} {{ empleado.apellidos }} {{empleado.num_empleado}}</option> 
+                {% endfor %}
+            {% else %}
+                {% for empleado in sobrestante %}
+                    {% if idEmpleadoReporte == empleado.id %}                
+                        <option value="{{empleado.id}}" selected>{{ empleado.nombre }} {{ empleado.apellidos }} {{empleado.num_empleado}}</option> 
+                    {% else %}
+                        <option value="{{empleado.id}}">{{ empleado.nombre }} {{ empleado.apellidos }} {{empleado.num_empleado}}</option> 
+                    {% endif %}
+            {% endfor %}
+            {% endif%}    
+        </select>
+        {% else %}
+            <p>No hay empleados</p>
+        {% endif %}
+        <input type="submit" value="Modificar">                     
+    </form>
+    <a href="/reportesUsuarios/">
+        <input type="submit" value="Cancelar">
+     </a>
+     <h1>Sobrestantes Disponibles</h1>
+     <ul>
+        {% if empleadosDisponibles %}
+            {% for empleadoDis in empleadosDisponibles %}
+                <li> {{ empleadoDis }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No hay empleados disponibles</li>     
+        {% endif %}
+    </ul>
+    <h1>Sonbrestantes con reporte Asignado</h1>
+    <ul>
+        {% if empleadosEnFuga %}
+            {% for empleadoNoDis in empleadosEnFuga %}
+                <li> {{ empleadoNoDis }} </li>
+            {% endfor %}
+        {% else %}
+            <li>No hay empleados con reportes Asignados</li>
+        {% endif %}
+    </ul>
+</body>
+</html>

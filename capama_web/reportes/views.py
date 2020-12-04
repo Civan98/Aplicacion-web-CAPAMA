@@ -73,6 +73,7 @@ def reportesUsuarios(request):
         return render(request, 'reportes/reportesUsuarios.html', {'reportesU':page_obj, 'nomEmpleado': nomEmpleado, 'cargo':cargo})
     return HttpResponseRedirect('/login/')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def reportesEmpleados(request):
     #para validar si hay una sesión activa
     if 'member_id' in request.session:
@@ -303,11 +304,12 @@ def modificarEmpleados(request, idEmpleado):
         return render(request,'modificarEmpleado.html',context)
     return HttpResponseRedirect('/login/')
 
-def detallesReporteEmpleado(request, idReporte):
+def detallesReporteEmpleado(request, idReporte, idReporteM):
     if 'member_id' in request.session:
         datosReporte = ReportesUsuario.objects.get(id = idReporte)
+        datosMateriales = Materiales.objects.filter(id_reporte_empleado_id = idReporteM)
          
-        return render(request, 'reportes/detallesReporteEmpleado.html', {'datosReporteU': datosReporte })
+        return render(request, 'reportes/detallesReporteEmpleado.html', {'datosReporteU': datosReporte, 'datosMateriales':datosMateriales })
     return HttpResponseRedirect('/login/')
 
 

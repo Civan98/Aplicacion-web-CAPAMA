@@ -7,16 +7,8 @@
     <title>Reportes usuarios</title>
 </head>
 <body>
-    <p>Bienvenido {{ nomEmpleado }} </p>
-    <a href="/logout/">Cerrar Sesión</a>
-
+   
     
-    {% if  cargo == 'Sobrestante' %}
-        <p>eres sobrestante we</p>
-
-    {% else %}
-        <p> eres admin we </p>
-    {% endif %}
 
 
     {% if datosReporteU %}
@@ -31,20 +23,32 @@
         <tr>
             <td>{{ datosReporteU.id_usuario }}</td>
             <td>Colonia: {{ datosReporteU.colonia }}, Calle: {{ datosReporteU.calle }}, No. interior: {{ datosReporteU.num_interior }}, No. exterior: {{ datosReporteU.num_exterior}} </td>
-           
-            <!-- <td>
-                <a href="/detallesReporteUsuario/{{ reportes.id}}">
-                    <input type="submit" value="Modificar">
-                </a> 
-            </td> -->
         </tr>
     </table>
 
     {% else %}
-    <p> No hay reportes de usuarios </p>
+    <p> No hay reportes de empleados </p>
     {% endif %}
 
+<h1>Tabla de materiales</h1>
+    {% if datosMateriales %}
+    <table border="1">
+        <tr>
+            <th>Material</th>
+            <th>Cantidad</th> 
+           
+        </tr>
+        {% for reportes in datosMateriales %}
+        <tr>
+            <td>{{ reportes.material }}</td>
+            <td>{{ reportes.cantidad }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
+    {% else %}
+    <p> No hay Materiales usados</p>
+    {% endif %}
 
 </body>
 </html>

@@ -1,100 +1,83 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reportes Usuarios</title>
+    <title>Reportes usuarios</title>
 </head>
 <body>
-    {% if reportesUsuario %}
+    <p>Bienvenido {{ nomEmpleado }} </p>
+    <a href="/logout/">Cerrar Sesión</a>
+
+    
+    {% if  cargo == 'Sobrestante' %}
+        <p>eres sobrestante we</p>
+
+    {% else %}
+        <p> eres admin we </p>
+    {% endif %}
+
+
+    {% if reportesE %}
     <table border="1">
         <tr>
-            <th>Folio de seguimiento</th>
+            <th>Empleado</th>
+             <th>Folio de seguimiento</th> 
+            <th>Fecha de inicio</th>
+            <th>Fecha fin</th>
             <th>Tipo de anomalía</th>
             <th>Tipo de servicio</th>
-            <th>Dirección</th>
             <th>Zona</th>
-            <th>Fecha</th>
-            <th>Descripción</th>
+            <th>Descripción</th>            
             <th>Foto</th>
             <th>Prioridad</th>
             <th>Estado</th>
+            <th>Botón detalles</th>
         </tr>
-        {% for datos in reportesUsuario %}
+        {% for reportes in reportesE %}
         <tr>
-            <td>{{ datos.folio_seguimiento }}</td>
-            <td>{{ datos.tipo_anomalia }}</td>
-            <td>{{ datos.tipo_servicio }}</td>
-            <td>Colonia: {{ datos.colonia }}, Calle: {{ datos.calle }}, No. interior: {{ datos.num_interior }}, No. exterior: {{ datos.num_exterior}} </td>
-            <td>{{ datos.zona }}</td>
-            <td>{{ datos.fecha }}</td>
-            <td>{{ datos.descripcion }}</td>
-            <td>{{ datos.foto }}</td>                       
-            <td>{{ datos.prioridad }}</td>                       
-            <td> 
-                <a href="/modificarUsuarios/{{ datos.id}}">
-                    <input type="submit" value="Modificar">
-                </a>
+            <td>{{ reportes.id_empleado }}</td>
+             <td>{{ reportes.id_repoteUsuario }}</td>
+            <td>{{ reportes.fecha_inicio }}</td>
+            <td>{{ reportes.fecha_fin }}</td>
+            <td>{{ reportes.tipo_anomalia }}</td>
+            <td>{{ reportes.tipo_servicio }}</td>
+            <td>{{ reportes.zona }}</td>
+            <td>{{ reportes.descripcion }}</td>        
+            <td>{{ reportes.foto }}</td>
+            <td>{{ reportes.estado }}</td>
+            <td>{{ reportes.prioridad }}</td>            
+            <td>
+                <a href="/detallesReporteEmpleado/{{ reportes.id_repoteUsuario_id}}">
+                    <input type="submit" value="Detalles">
+                </a> 
             </td>
-            
         </tr>
         {% endfor %}
     </table>
 
     {% else %}
-    <p> No hay reportes </p>
+    <p> No hay reportes de usuarios </p>
     {% endif %}
 
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reportes Usuarios</title>
-</head>
-<body>
-    {% if reportesUsuario %}
-    <table border="1">
-        <tr>
-            <th>Folio de seguimiento</th>
-            <th>Tipo de anomalía</th>
-            <th>Tipo de servicio</th>
-            <th>Dirección</th>
-            <th>Zona</th>
-            <th>Fecha</th>
-            <th>Descripción</th>
-            <th>Foto</th>
-            <th>Prioridad</th>
-            <th>Estado</th>
-        </tr>
-        {% for datos in reportesUsuario %}
-        <tr>
-            <td>{{ datos.folio_seguimiento }}</td>
-            <td>{{ datos.tipo_anomalia }}</td>
-            <td>{{ datos.tipo_servicio }}</td>
-            <td>Colonia: {{ datos.colonia }}, Calle: {{ datos.calle }}, No. interior: {{ datos.num_interior }}, No. exterior: {{ datos.num_exterior}} </td>
-            <td>{{ datos.zona }}</td>
-            <td>{{ datos.fecha }}</td>
-            <td>{{ datos.descripcion }}</td>
-            <td>{{ datos.foto }}</td>                       
-            <td>{{ datos.prioridad }}</td>                       
-            <td>{{ datos.estado }}</td>                       
-            <td> 
-                {% comment %} <a href="/modificarUsuarios/{{ datos.id}}">
-                    <input type="submit" value="Modificar">
-                </a> {% endcomment %}
-            </td>
-            
-        </tr>
-        {% endfor %}
-    </table>
-
-    {% else %}
-    <p> No hay reportes </p>
-    {% endif %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if reportesE.has_previous %}
+                <a href="?page=1">&laquo; Primera Página</a>
+                <a href="?page={{ reportesE.previous_page_number }}">Anterior</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ reportesE.number }} of {{ reportesE.paginator.num_pages }}.
+            </span>
+    
+            {% if reportesE.has_next %}
+                <a href="?page={{ reportesE.next_page_number }}">Siguiente</a>
+                <a href="?page={{ reportesE.paginator.num_pages }}">Última Página &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 
 
 </body>

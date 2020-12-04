@@ -73,6 +73,25 @@ def reportesUsuarios(request):
         return render(request, 'reportes/reportesUsuarios.html', {'reportesU':page_obj, 'nomEmpleado': nomEmpleado, 'cargo':cargo})
     return HttpResponseRedirect('/login/')
 
+def reportesEmpleados(request):
+    #para validar si hay una sesión activa
+    if 'member_id' in request.session:
+        #datos del empleado en session
+        empleado = Empleados.objects.get(id = request.session['member_id'])
+        nomEmpleado = empleado.nombre+' '+empleado.apellidos
+        cargo = empleado.cargo
+
+        reportesE = ReportesEmpleado.objects.order_by('prioridad')
+        paginator = Paginator(reportesE, 2)#el 2 es número de instancias que se muestran en la paginación
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        # print(reportesU.)
+        # cantidadReportesUsuario = reportesU.count()
+
+        return render(request, 'reportes/reportesEmpleados.html', {'reportesE':page_obj, 'nomEmpleado': nomEmpleado, 'cargo':cargo})
+    return HttpResponseRedirect('/login/')
+
 def registrarUsuario(request):
     if 'member_id' in request.session:
         # datosObtenidos = UsuarioForm()
@@ -283,6 +302,14 @@ def modificarEmpleados(request, idEmpleado):
         context= {'datosNuevos':formModificarEmpleado}
         return render(request,'modificarEmpleado.html',context)
     return HttpResponseRedirect('/login/')
+
+def detallesReporteEmpleado(request, idReporte):
+    if 'member_id' in request.session:
+        datosReporte = ReportesUsuario.objects.get(id = idReporte)
+         
+        return render(request, 'reportes/detallesReporteEmpleado.html', {'datosReporteU': datosReporte })
+    return HttpResponseRedirect('/login/')
+
 
 def detallesReporteUsuario(request, idReporte):
     if 'member_id' in request.session:

@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes usuarios</title>
+</head>
+<body>
+    <p>Bienvenido {{ nomEmpleado }} </p>
+    <a href="/logout/">Cerrar Sesión</a>
+
+    
+    {% if  cargo == 'Sobrestante' %}
+        <p>eres sobrestante we</p>
+
+    {% else %}
+        <p> eres admin we </p>
+    {% endif %}
+
+
+    {% if datosReporteU %}
+    <table border="1">
+        <tr>
+            <th>Nombre de Usuario atendido</th>
+            <th>Dirección</th>
+            
+            <!-- <th>Botón detalles</th> -->
+        </tr>
+        
+        <tr>
+            <td>{{ datosReporteU.id_usuario }}</td>
+            <td>Colonia: {{ datosReporteU.colonia }}, Calle: {{ datosReporteU.calle }}, No. interior: {{ datosReporteU.num_interior }}, No. exterior: {{ datosReporteU.num_exterior}} </td>
+           
+            <!-- <td>
+                <a href="/detallesReporteUsuario/{{ reportes.id}}">
+                    <input type="submit" value="Modificar">
+                </a> 
+            </td> -->
+        </tr>
+    </table>
+
+    {% else %}
+    <p> No hay reportes de usuarios </p>
+    {% endif %}
+
+
+
+</body>
+</html>

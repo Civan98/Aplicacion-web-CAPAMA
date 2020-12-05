@@ -18,6 +18,13 @@
         <p> eres admin we </p>
     {% endif %}
 
+<!-- Aqui se carga el formulario de filtrado -->
+    <form method="GET">
+        {{myFilter.form}}
+        <button type="submit">
+            Buscar
+        </button>
+    </form>
 
     {% if reportesU %}
     <table border="1">
@@ -30,6 +37,7 @@
             <th>Descripción</th>            
             <th>Fecha</th>
             <th>Usuario</th>
+            <th>Empleado que atiende el reporte</th>
             <th>Foto</th>
             <th>Prioridad</th>
             <th>Estado</th>
@@ -40,14 +48,15 @@
             <td>{{ reportes.folio_seguimiento }}</td>
             <td>{{ reportes.tipo_anomalia }}</td>
             <td>{{ reportes.tipo_servicio }}</td>
-            <td>Colonia: {{ reportes.colonia }}, Calle: {{ reportes.calle }}, No. interior: {{ reportes.num_interior }}, No. exterior: {{ reportes.num_exterior}} </td>
+            <td>Colonia: {{ reportes.colonia }}, Calle: {{ reportes.calle }}, No. interior: {{ reportes.num_interior }}, No. exterior: {{ reportes.num_exterior}}, C.P. {{ reportes.cp}} </td>
             <td>{{ reportes.zona }}</td>
             <td>{{ reportes.descripcion }}</td>        
             <td>{{ reportes.fecha }}</td>
             <td>{{ reportes.id_usuario }}</td>
+            <td>{{ reportes.id_empleado }}</td>
             <td>{{ reportes.foto }}</td>
-            <td>{{ reportes.estado }}</td>
-            <td>{{ reportes.prioridad }}</td>            
+            <td>{{ reportes.prioridad }}</td> 
+            <td>{{ reportes.estado }}</td>           
             <td>
                 <a href="/detallesReporteUsuario/{{ reportes.id}}">
                     <input type="submit" value="Modificar">

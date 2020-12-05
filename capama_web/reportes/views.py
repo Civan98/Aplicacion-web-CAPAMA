@@ -4,6 +4,7 @@ from django.views.decorators.cache import cache_control
 from django.template import Template, Context
 from reportes.forms import FormLogin
 from django.core.paginator import Paginator
+from .filters import ReportesUsuarioFilter, ReportesEmpleadoFilter
 # importar el formulario del registro del usuario del archivo forms
 from .forms import UsuarioForm, EmpleadoForm, DetallesReporteUsuarioForm
 import re
@@ -63,14 +64,19 @@ def reportesUsuarios(request):
         cargo = empleado.cargo
 
         reportesU = ReportesUsuario.objects.order_by('prioridad')
+
+        #para poder filtrar
+        myFilter = ReportesUsuarioFilter(request.GET, queryset=reportesU)
+        reportesU = myFilter.qs
+        #para poder paginar
         paginator = Paginator(reportesU, 2)#el 2 es número de instancias que se muestran en la paginación
         page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+        page_obj = paginator.get_page(page_number) #page_obj es el objeto de tabla que retorna ya filtrado y paginado
 
         # print(reportesU.)
         # cantidadReportesUsuario = reportesU.count()
 
-        return render(request, 'reportes/reportesUsuarios.html', {'reportesU':page_obj, 'nomEmpleado': nomEmpleado, 'cargo':cargo})
+        return render(request, 'reportes/reportesUsuarios.html', {'reportesU':page_obj, 'nomEmpleado': nomEmpleado, 'cargo':cargo, 'myFilter':myFilter })
     return HttpResponseRedirect('/login/')
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -83,6 +89,11 @@ def reportesEmpleados(request):
         cargo = empleado.cargo
 
         reportesE = ReportesEmpleado.objects.order_by('prioridad')
+        
+        #para poder filtrar
+        myFilter = ReportesEmpleadoFilter(request.GET, queryset=reportesE)
+        reportesE  = myFilter.qs
+        #para poder paginar
         paginator = Paginator(reportesE, 2)#el 2 es número de instancias que se muestran en la paginación
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -90,7 +101,7 @@ def reportesEmpleados(request):
         # print(reportesU.)
         # cantidadReportesUsuario = reportesU.count()
 
-        return render(request, 'reportes/reportesEmpleados.html', {'reportesE':page_obj, 'nomEmpleado': nomEmpleado, 'cargo':cargo})
+        return render(request, 'reportes/reportesEmpleados.html', {'reportesE':page_obj, 'nomEmpleado': nomEmpleado, 'cargo':cargo, 'myFilter':myFilter})
     return HttpResponseRedirect('/login/')
 
 def registrarUsuario(request):
@@ -307,7 +318,7 @@ def modificarEmpleados(request, idEmpleado):
 def detallesReporteEmpleado(request, idReporte, idReporteM):
     if 'member_id' in request.session:
         datosReporte = ReportesUsuario.objects.get(id = idReporte)
-        datosMateriales = Materiales.objects.filter(id_reporte_empleado_id = idReporteM)
+        datosMateriales = Materiales.objects.filter(id_reporte_empleado_id = idReporteM)#id de la tabla de materiales
          
         return render(request, 'reportes/detallesReporteEmpleado.html', {'datosReporteU': datosReporte, 'datosMateriales':datosMateriales })
     return HttpResponseRedirect('/login/')

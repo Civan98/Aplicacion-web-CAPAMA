@@ -18,6 +18,13 @@
         <p> eres admin we </p>
     {% endif %}
 
+    <form method="GET">
+        {{myFilter.form}}
+        <button type="submit">
+            Buscar
+        </button>
+    </form>
+
 
     {% if reportesE %}
     <table border="1">

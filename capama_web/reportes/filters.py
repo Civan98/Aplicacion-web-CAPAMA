@@ -52,3 +52,47 @@ class ReportesEmpleadoFilter(django_filters.FilterSet):
         exclude = ['fecha_inicio', 'fecha_fin','foto']
 
 
+class MostrarUsuarioFilter(django_filters.FilterSet):
+    
+
+    # se agrega el charfilter para que filtre sin escribir todo el campo, resultados relacionados
+    nombre = CharFilter(field_name='nombre', lookup_expr='icontains', label='Nombre')
+    apellidos = CharFilter(field_name='apellidos', lookup_expr='icontains', label='Apellidos')
+    email= CharFilter(field_name='email', lookup_expr='icontains', label='Email')
+    contrasena = CharFilter(field_name='contrasena', lookup_expr='icontains', label='Contraseña')
+    num_contrato = CharFilter(field_name='num_contrato', lookup_expr='icontains', label='Número de contrato')
+    colonia = CharFilter(field_name='colonia', lookup_expr='icontains', label='Colonia')
+    calle = CharFilter(field_name='calle', lookup_expr='icontains', label='Calle')
+    cp = CharFilter(field_name='cp', lookup_expr='icontains', label='C.P.')
+    telefono = CharFilter(field_name='telefono', lookup_expr='icontains', label='Teléfono')
+
+
+    class Meta:
+        model = Usuarios
+        fields = '__all__'
+      
+
+
+class MostrarEmpleadoFilter(django_filters.FilterSet):
+    
+
+    # se agrega el charfilter para que filtre sin escribir todo el campo, resultados relacionados
+    nombre = CharFilter(field_name='nombre', lookup_expr='icontains', label='Nombre')
+    apellidos = CharFilter(field_name='apellidos', lookup_expr='icontains', label='Apellidos')
+    email= CharFilter(field_name='email', lookup_expr='icontains', label='Email')
+    contrasena = CharFilter(field_name='contrasena', lookup_expr='icontains', label='Contraseña')
+    telefono = CharFilter(field_name='telefono', lookup_expr='icontains', label='Teléfono')
+    cargo = CharFilter(field_name='cargo', lookup_expr='icontains', label='Cargo')
+    num_empleado = CharFilter(field_name='num_empleado', lookup_expr='icontains', label='Número de empleado')
+    colonia = CharFilter(field_name='colonia', lookup_expr='icontains', label='Colonia')
+    calle = CharFilter(field_name='calle', lookup_expr='icontains', label='Calle')
+    cp = CharFilter(field_name='cp', lookup_expr='icontains', label='C.P.')
+    zona = CharFilter(field_name='zona', lookup_expr='icontains', label='Zona')
+    disponibilidad = CharFilter(field_name='disponibilidad', lookup_expr='icontains', label='Disponibilidad')
+
+    class Meta:
+        model = Empleados
+        fields = '__all__'
+        
+
+

@@ -4,7 +4,7 @@ from django.views.decorators.cache import cache_control
 from django.template import Template, Context
 from reportes.forms import FormLogin
 from django.core.paginator import Paginator
-from .filters import ReportesUsuarioFilter, ReportesEmpleadoFilter
+from .filters import ReportesUsuarioFilter, ReportesEmpleadoFilter, MostrarUsuarioFilter,MostrarEmpleadoFilter
 # importar el formulario del registro del usuario del archivo forms
 from .forms import UsuarioForm, EmpleadoForm, DetallesReporteUsuarioForm
 import re
@@ -173,11 +173,17 @@ def registrarEmpleado(request):
 def mostrarUsuarios(request):
     if 'member_id' in request.session:
         infoUsuarios = Usuarios.objects.all()
+
+        #para poder filtrar
+        myFilter = MostrarUsuarioFilter(request.GET, queryset=infoUsuarios)
+        infoUsuarios  = myFilter.qs
+        #para poder paginar
         paginator = Paginator(infoUsuarios, 2)#el 2 es número de instancias que se muestran en la paginación
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
+
         print(infoUsuarios)    
-        return render(request, 'mostrarUsuarios.html', {'usuarios':page_obj})
+        return render(request, 'mostrarUsuarios.html', {'usuarios':page_obj,'myFilter':myFilter})
     return HttpResponseRedirect('/login/')
 
 def modificarUsuarios(request, idUsuario):
@@ -254,11 +260,17 @@ def modificarUsuarios(request, idUsuario):
 def mostrarEmpleados(request):
     if 'member_id' in request.session:
         infoEmpleados = Empleados.objects.all()
+
+
+         #para poder filtrar
+        myFilter = MostrarEmpleadoFilter(request.GET, queryset=infoEmpleados)
+        infoEmpleados  = myFilter.qs
+        #para paginar
         paginator = Paginator(infoEmpleados, 2)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         #print(infoEmpleados)
-        return render(request,'mostrarEmpleados.html',{'empleados':page_obj} )
+        return render(request,'mostrarEmpleados.html',{'empleados':page_obj,'myFilter':myFilter} )
     return HttpResponseRedirect('/login/')
 
 def modificarEmpleados(request, idEmpleado):

@@ -6,6 +6,14 @@
     <title>Usuarios</title>
 </head>
 <body>
+
+    <form method="GET">
+        {{myFilter.form}}
+        <button type="submit">
+            Buscar
+        </button>
+    </form>
+    
     {% if usuarios %}
     <table border="1">
         <tr>

@@ -27,7 +27,7 @@ class ReportesUsuarioFilter(django_filters.FilterSet):
     class Meta:
         model = ReportesUsuario
         fields = '__all__'
-        exclude = ['fecha', 'geoLocalizacion', 'foto']
+        exclude = ['fecha', 'geolocalizacion', 'foto']
 
 class DateInput2(forms.DateInput):
     input_type = 'fecha_inicio'

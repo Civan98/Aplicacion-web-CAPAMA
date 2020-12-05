@@ -101,7 +101,7 @@ class ReportesUsuario (models.Model):
     folio_seguimiento = models.CharField(max_length = 50, unique=True)
     foto = models.CharField(max_length = 50)
     prioridad = models.CharField(max_length = 20, choices=PRIORIDAD, default= PRIORIDAD)
-    geoLocalizacion = models.CharField(max_length = 100, verbose_name='Geolocalización')
+    geolocalizacion = models.CharField(max_length = 100, verbose_name='Geolocalización')
     colonia = models.CharField(max_length = 50)
     calle = models.CharField(max_length = 50)
     cp = models.IntegerField(blank = True, verbose_name='código postal')
@@ -176,8 +176,8 @@ class ReportesEmpleado (models.Model):
     # num_exterior = models.IntegerField(blank = True)
     # fecha = models.DateTimeField(auto_now_add = True)
     estado = models.CharField(max_length = 20, choices = ESTADOS, default=ESTADOS)
-    id_empleado = models.ForeignKey(Empleados, on_delete = models.CASCADE)
-    id_repoteUsuario = models.ForeignKey(ReportesUsuario, on_delete = models.DO_NOTHING)
+    id_empleado = models.ForeignKey(Empleados, on_delete = models.CASCADE, verbose_name='Empleado')
+    id_repoteUsuario = models.ForeignKey(ReportesUsuario, on_delete = models.DO_NOTHING, verbose_name='Folio seguimiento')
     # id_usuario = models.ForeignKey(Usuarios, on_delete = models.DO_NOTHING)
     
     # mostrar el folio de seguimiento

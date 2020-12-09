@@ -113,6 +113,7 @@ def registrarUsuario(request):
             datosObtenidos = UsuarioForm(request.POST or None)
             pattern = '[0-9]{3,3}\-[0-9]{3,3}\-[0-9]{4,4}\-[0-9]'
             num_contratoObtenido = request.POST['num_contrato']
+            emailObtenido = request.POST['email']
             conincidencia = re.findall(pattern,num_contratoObtenido)
             if (conincidencia == []):
                 error ='Inserte correctamente su número de contrato (incluya guiones)'
@@ -124,6 +125,16 @@ def registrarUsuario(request):
                 }
                 return render(request, 'registrarUsuario.html', context)
             else:
+                if Usuarios.objects.filter(email = emailObtenido).exists():
+                    error ='Error: su email ya ha sido registrado'
+                    print(error)
+                    # datosObtenidos = UsuarioForm()
+                    context= {
+                    'formularioUsuario':datosObtenidos,
+                    'error':error
+                    }
+                    return render(request, 'registrarUsuario.html', context)
+
                 if Usuarios.objects.filter(num_contrato = num_contratoObtenido).exists():
                     error ='Error: su número de contrato ya ha sido registrado'
                     print(error)
@@ -150,6 +161,15 @@ def registrarEmpleado(request):
         if request.method =='POST':
             datosObtenidos = EmpleadoForm(request.POST)
             num_empleadoForm = request.POST['num_empleado']
+            emailObtenido = request.POST['email']
+            if Empleados.objects.filter(email = emailObtenido).exists():
+                error ='Error: su email ya ha sido registrado'
+                context= {
+                    'formularioUsuario':datosObtenidos,
+                    'error':error
+                    }
+                return render(request, 'registrarUsuario.html', context)
+
             if Empleados.objects.filter(num_empleado = num_empleadoForm).exists():
                 error ='Error: su número de usuario ya ha sido registrado'
                 context= {
@@ -209,6 +229,7 @@ def modificarUsuarios(request, idUsuario):
             pattern = '[0-9]{3,3}\-[0-9]{3,3}\-[0-9]{4,4}\-[0-9]'
             num_contratoObtenido = request.POST['num_contrato']
             conincidencia = re.findall(pattern, num_contratoObtenido)
+            emailObtenido = request.POST['email']
             if (conincidencia == []):
                 error ='Inserte correctamente su número de contrato (incluya guiones)'
                 print(error)
@@ -217,6 +238,15 @@ def modificarUsuarios(request, idUsuario):
                     'error':error
                 }
                 return render(request, 'modificarUsuario.html', context)
+            if(datosUsuario.email != emailObtenido):
+                if(Usuarios.objects.filter(email = emailObtenido).count() == 1):
+                    error ='Error: su email: '+emailObtenido+' ya ha sido registrado.' 
+                    print(formModificarUsuario)
+                    context= {
+                        'datosNuevos':formModificarUsuario,
+                        'error':error
+                    }
+                    return render(request, 'modificarUsuario.html', context)      
             # si los numeros de contrato son diferentes
             if(datosUsuario.num_contrato != num_contratoObtenido):
                 # comprobar si existe el nuevo número de contrato
@@ -229,6 +259,7 @@ def modificarUsuarios(request, idUsuario):
                         'error':error
                     }
                     return render(request, 'modificarUsuario.html', context)
+              
 
         # if request.method == 'POST':
             formModificarUsuario = UsuarioForm(request.POST)
@@ -295,6 +326,7 @@ def modificarEmpleados(request, idEmpleado):
         if request.method == 'POST':          
             # obtener el número de empleado del formulario
             num_empleadoForm = request.POST['num_empleado']
+            emailObtenido = request.POST['email']
             if(datosEmpleado.num_empleado != num_empleadoForm):
                 if(Empleados.objects.filter(num_empleado = num_empleadoForm).count() == 1):
                     error ='Error: su número de empleado: '+ num_empleadoForm +' ya ha sido registrado.' 
@@ -304,6 +336,15 @@ def modificarEmpleados(request, idEmpleado):
                         'error':error
                     }                           
                 return render(request, 'modificarEmpleado.html', context)
+            if(datosEmpleado.email != emailObtenido):
+                if(Empleados.objects.filter(email = emailObtenido).count() == 1):
+                    error ='Error: su email ya ha sido registrado.' 
+                    print(formModificarEmpleado)
+                    context= {
+                        'datosNuevos':formModificarEmpleado,
+                        'error':error
+                    }                           
+                return render(request, 'modificarEmpleado.html', context)        
 
             formModificarEmpleado = EmpleadoForm(request.POST)  
             if formModificarEmpleado.is_valid():
@@ -346,11 +387,17 @@ def detallesReporteUsuario(request, idReporte):
         # extraer los empleados disponibles y los que etán en fuga, y asignarlos a una lista
         listaEmpleadosDisponibles = []
         listaEmpleadosEnFuga = []
+        
+
+
         for datosE in sobrestante:
             if(datosE.disponibilidad == 'Disponible'):
                 listaEmpleadosDisponibles.append(datosE.nombre +' ' +datosE.apellidos +'| Num empleado: '+datosE.num_empleado)
             else:
-                listaEmpleadosEnFuga.append(datosE.nombre +' ' +datosE.apellidos +'| Num empleado: '+datosE.num_empleado)
+                listaEmpleadosEnFuga.append(datosE.nombre +' ' +datosE.apellidos +'| Num empleado: '+datosE.num_empleado)    
+
+
+
         # inicializar el id del empleado en crudo
         idEmpleadoRaw=[]
         idEmpleadoRaw.append('-1')
@@ -362,7 +409,7 @@ def detallesReporteUsuario(request, idReporte):
             'folio_seguimiento':datosReporte.folio_seguimiento,
             'foto':datosReporte.foto,
             'prioridad':datosReporte.prioridad,
-            'geoLocalizacion':datosReporte.geoLocalizacion,
+            'geoLocalizacion':datosReporte.geolocalizacion,
             'colonia':datosReporte.colonia,
             'calle':datosReporte.calle,
             'cp':datosReporte.cp, 
@@ -389,9 +436,13 @@ def detallesReporteUsuario(request, idReporte):
         #     print('con empleado asignado')
 
         if request.method =='POST':
+            # si no hay empleados, que no haga alguna acción
+            if (len(listaEmpleadosEnFuga) ==0 and len(listaEmpleadosDisponibles)==0):
+                
+                return redirect('/reportesUsuarios')
             # sólo los reportes nuevos se pueden editar
             if datosReporte.estado == 'Nuevo':   
-                # print('datos '+datosReporte.id_empleado)         
+                # print('datos '+datosReporte.id_empleado)                      
                 if(request.POST['seleccionarSobrestante']!="" and datosReporte.id_empleado is None):
                     # modificar la disponibilidad del empleado a 'En fuga', para ello debemos obtener su instancia
                     idEmpleadoAsignado = request.POST['seleccionarSobrestante']
@@ -436,88 +487,3 @@ def detallesReporteUsuario(request, idReporte):
 
         return render(request, 'reportes/detallesReporteUsuario.html', context)
     return HttpResponseRedirect('/login/')
-
-
-
-
-    # manipular el id de los empleados (debido que el método __str__ interfiere con su retorno), obteniendo sólo el id
-    # comprobar si hay datos en la bd del id_empleado asignado al reporte
-    # existeID = False
-    # if(datosReporte.id_empleado is None):
-    #     print('no hay dato')
-    # else:
-    #     existeID = True
-    #     idEmpleado = str(datosReporte.id_empleado)
-    #     idEmpleadoRaw = idEmpleado.split('.')
-
-
-
-
-    # popular el formulario con datos iniciales obtenidos
-    # ----------------------------------------v1
-    # reporteU = DetallesReporteUsuarioForm(initial=datos)
-
-    # # cuando se le asigne un sobreestante, se cambiará el estado del reporte a 'en proceso
-    # # cuando el sobreestante reciba, le de aceptar al reporte, se cambiará el estado a 'Monitoreado'
-    # # cuando el sobreestante termine de reparar la fuga se cambiará el estado a 'Atendido'
-    # if request.method == 'POST':        
-    #     # evitar que si ya se atendió un reporte, se pueda seguir modificando y por ende cambie de estado
-    #     if(datosReporte.estado == 'Nuevo'):       
-    #         # print('prueba ' + request.POST['seleccionarSobrestante'])               
-    #         if request.POST['seleccionarSobrestante'] == '':
-    #             # print(request.POST['seleccionarSobrestante'])
-    #             # idEmpleadoRaw[0] = "-1"
-    #             context={
-    #                 'datosReporte':reporteU,
-    #                 'sobrestante': sobrestante,
-    #                 'estado': datosReporte.estado,                    
-    #                 'empleadosDisponibles': listaEmpleadosDisponibles,
-    #                 'empleadosEnFuga': listaEmpleadosEnFuga
-    #             }
-    #             return render(request, 'reportes/detallesReporteUsuario.html', context)
-    #         else:
-    #             if not existeID:
-    #                 # actualizar la disponibilidad del empleado, creando primero su instancia y después sobreescribir sus datos
-    #                 # extraer el id de forma cruda, porque no logro obtener sólo el id, el método __str__ de models interfiere
-    #                 idEmpleadoAsignado = request.POST['seleccionarSobrestante']
-    #                 instanciaEmpleado = Empleados.objects.get(id=idEmpleadoAsignado)
-    #                 instanciaEmpleado.disponibilidad = 'En fuga'
-    #                 instanciaEmpleado.save()
-    #                 datosReporte.estado = 'En proceso'
-    #                 idEmpleado = int(request.POST['seleccionarSobrestante'])
-    #                 # para retornar el idEmpleado se necesita una instancia (varios objetos)
-    #                 instancia = Empleados.objects.get(id=idEmpleado)    
-    #                 datosReporte.id_empleado = instancia
-    #                 datosReporte.save()  
-    #                 context={
-    #                     'datosReporte':reporteU,
-    #                     'sobrestante': sobrestante,
-    #                     'estado': datosReporte.estado,
-    #                     'idEmpleadoReporte': idEmpleadoAsignado,
-    #                     'empleadosDisponibles': listaEmpleadosDisponibles,
-    #                     'empleadosEnFuga': listaEmpleadosEnFuga
-    #                 }
-    #             else:
-    #                 context={
-    #                 'datosReporte':reporteU,
-    #                 'sobrestante': sobrestante,
-    #                 'estado': datosReporte.estado,                    
-    #                 'empleadosDisponibles': listaEmpleadosDisponibles,
-    #                 'empleadosEnFuga': listaEmpleadosEnFuga
-    #                 }
-
-    # else:
-    #     context={
-    #         'datosReporte':reporteU,
-    #         'sobrestante': sobrestante,
-    #         'estado': datosReporte.estado,                    
-    #         'empleadosDisponibles': listaEmpleadosDisponibles,
-    #         'empleadosEnFuga': listaEmpleadosEnFuga
-    #     }
-        
-
-    # return render(request, 'reportes/detallesReporteUsuario.html', context)
-# ----------------------------------v1 fin
-# def reportesEmpleado(request):
-#     reportesU = ReportesUsuario.objects.all()
-#     return render(request, 'reportesUsuarios.html', {'reportesUsuario':reportesU})

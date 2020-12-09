@@ -454,7 +454,8 @@ def detallesReporteUsuario(request, idReporte):
                     datosReporte.estado = 'En proceso' 
                     datosReporte.id_empleado = empleadoAsignado
                     datosReporte.save()
-                    # obtener el id del empleado en crudo para que el combobox se quede con el empleado que está asignado
+                    # obtener el id del empleado en crudo para que el combobox se quede con el empleado que está asignado,
+                    # el método __str__ de los reportes del usuario devuelve algo asó: 1.- aslkñdj, por ello, corto el string hasta el "."y tomo su primera posición, el cuál sería el '1' en este caso
                     idEmpleadoCombo = str(datosReporte.id_empleado)
                     idEmpleadoRaw = idEmpleadoCombo.split('.')
                     # rellenar nuevamente el formulario con los datos

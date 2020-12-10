@@ -151,3 +151,20 @@ dmypy.json
 .prof
 
 # End of https://www.toptal.com/developers/gitignore/api/django
+capama_web/capama_web/__pycache__/wsgi.cpython-38.pyc
+capama_web/capama_web/__pycache__/urls.cpython-38.pyc
+capama_web/capama_web/__pycache__/settings.cpython-38.pyc
+capama_web/capama_web/__pycache__/__init__.cpython-38.pyc
+capama_web/reportes/__pycache__/__init__.cpython-38.pyc
+capama_web/capama_web/__pycache__/wsgi.cpython-37.pyc
+capama_web/capama_web/__pycache__/urls.cpython-37.pyc
+capama_web/capama_web/__pycache__/settings.cpython-37.pyc
+capama_web/capama_web/__pycache__/__init__.cpython-37.pyc
+capama_web/reportes/__pycache__/__init__.cpython-37.pyc
+capama_web/reportes/__pycache__/admin.cpython-37.pyc
+capama_web/reportes/__pycache__/filters.cpython-37.pyc
+capama_web/reportes/__pycache__/forms.cpython-37.pyc
+capama_web/reportes/__pycache__/models.cpython-37.pyc
+capama_web/reportes/__pycache__/urls.cpython-37.pyc
+capama_web/reportes/__pycache__/views.cpython-37.pyc
+capama_web/entorno

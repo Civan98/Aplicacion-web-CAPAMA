@@ -104,6 +104,7 @@ def reportesEmpleados(request):
         return render(request, 'reportes/reportesEmpleados.html', {'reportesE':page_obj, 'nomEmpleado': nomEmpleado, 'cargo':cargo, 'myFilter':myFilter})
     return HttpResponseRedirect('/login/')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def registrarUsuario(request):
     if 'member_id' in request.session:
         # datosObtenidos = UsuarioForm()
@@ -156,6 +157,7 @@ def registrarUsuario(request):
         return render(request, 'registrarUsuario.html', context)
     return HttpResponseRedirect('/login/')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def registrarEmpleado(request):
     if 'member_id' in request.session:
         if request.method =='POST':
@@ -190,6 +192,7 @@ def registrarEmpleado(request):
         return render(request,'registrarEmpleado.html', context)
     return HttpResponseRedirect('/login/')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def mostrarUsuarios(request):
     if 'member_id' in request.session:
         infoUsuarios = Usuarios.objects.all()
@@ -206,6 +209,7 @@ def mostrarUsuarios(request):
         return render(request, 'mostrarUsuarios.html', {'usuarios':page_obj,'myFilter':myFilter})
     return HttpResponseRedirect('/login/')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def modificarUsuarios(request, idUsuario):
     if 'member_id' in request.session:
         datosUsuario = Usuarios.objects.get(id = idUsuario)
@@ -288,6 +292,7 @@ def modificarUsuarios(request, idUsuario):
         return render(request, 'modificarUsuario.html', context)
     return HttpResponseRedirect('/login/')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def mostrarEmpleados(request):
     if 'member_id' in request.session:
         infoEmpleados = Empleados.objects.all()
@@ -304,6 +309,7 @@ def mostrarEmpleados(request):
         return render(request,'mostrarEmpleados.html',{'empleados':page_obj,'myFilter':myFilter} )
     return HttpResponseRedirect('/login/')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def modificarEmpleados(request, idEmpleado):
     if 'member_id' in request.session:
         datosEmpleado = Empleados.objects.get(id = idEmpleado)
@@ -368,6 +374,7 @@ def modificarEmpleados(request, idEmpleado):
         return render(request,'modificarEmpleado.html',context)
     return HttpResponseRedirect('/login/')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def detallesReporteEmpleado(request, idReporte, idReporteM):
     if 'member_id' in request.session:
         datosReporte = ReportesUsuario.objects.get(id = idReporte)
@@ -376,7 +383,7 @@ def detallesReporteEmpleado(request, idReporte, idReporteM):
         return render(request, 'reportes/detallesReporteEmpleado.html', {'datosReporteU': datosReporte, 'datosMateriales':datosMateriales })
     return HttpResponseRedirect('/login/')
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def detallesReporteUsuario(request, idReporte):
     if 'member_id' in request.session:
         # obtener los datos del reporte para después popular el formulario

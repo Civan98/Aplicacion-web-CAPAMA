@@ -92,7 +92,7 @@
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="cargo">Teléfono</label> {%render_field datosNuevos.cargo class+="form-control"%}
+                    <label for="cargo">Cargo</label> {%render_field datosNuevos.cargo class+="form-control"%}
                 </div>
                 <div class="form-group col-md-6">
                     <label for="num_empleado">Correo electrónico</label> {%render_field datosNuevos.num_empleado class+="form-control"%}
@@ -123,6 +123,15 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="temp_contrasena">Repetir contraseña</label> {%render_field datosNuevos.temp_contrasena type="password" class+="form-control"%}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="disponibilidad">Disponibilidad</label> {%render_field datosNuevos.disponibilidad  class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="advertencia">*Advertencia, si coloca el estado del empleado como "Fuera de servicio", deberá asignar otro empleado en los reportes de usuario si este tenía reportes asignados.*</label> 
                 </div>
             </div>
 

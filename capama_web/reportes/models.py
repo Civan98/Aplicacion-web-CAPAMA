@@ -17,7 +17,7 @@ class Usuarios(models.Model):
     # el id marca error porque no está definido aquí en el modelo, pero este se asignó de forma automática
 
     def __str__(self):
-        return ("%s %s" % (self.nombre, self.apellidos))
+        return ("%s  %s %s" % (self.num_contrato, self.nombre, self.apellidos))
     
     
     class Meta:
@@ -28,6 +28,8 @@ class Empleados(models.Model):
     CARGOS = (
         ('Administrador', 'Administrador'),
         ('Sobrestante', 'Sobrestante'),
+        ('Pipas', 'Pipas'),
+        ('Alcantarillado', 'Alcantarillado')        
     )
     ZONA = (        
         ('Nuevos desarrollos','Nuevos desarrollos'),
@@ -36,7 +38,8 @@ class Empleados(models.Model):
     )
     DISPONIBLE =(
         ('Disponible','Disponible'),
-        ('En fuga','En fuga')
+        ('En fuga','En fuga'),
+        ('Fuera de servicio','Fuera de servicio')
     )
     nombre = models.CharField(max_length = 45, verbose_name='Nombre')
     apellidos = models.CharField(max_length = 45, verbose_name='Apellidos')
@@ -53,7 +56,7 @@ class Empleados(models.Model):
 
 
     def __str__(self):
-        return ("%d.- %s %s" % ( self.id, self.nombre, self.apellidos))
+        return ("%s   %s %s" % ( self.num_empleado, self.nombre, self.apellidos))
 
     class Meta:
         verbose_name_plural= 'Empleados'
@@ -99,9 +102,9 @@ class ReportesUsuario (models.Model):
     tipo_anomalia = models.CharField(max_length = 50, choices=TIPOANOMALIA, default= TIPOANOMALIA)
     tipo_servicio = models.CharField(max_length = 50, choices=TIPOSERVICIO, default= TIPOSERVICIO)
     folio_seguimiento = models.CharField(max_length = 50, unique=True)
-    foto = models.CharField(max_length = 50)
+    foto = models.CharField(max_length = 200)
     prioridad = models.CharField(max_length = 20, choices=PRIORIDAD, default= PRIORIDAD)
-    geolocalizacion = models.CharField(max_length = 100, verbose_name='Geolocalización')
+    geolocalizacion = models.CharField(max_length = 200, verbose_name='Geolocalización')
     colonia = models.CharField(max_length = 50)
     calle = models.CharField(max_length = 50)
     cp = models.IntegerField(blank = True, verbose_name='código postal')
@@ -163,7 +166,7 @@ class ReportesEmpleado (models.Model):
     tipo_anomalia = models.CharField(max_length = 50, choices=TIPOANOMALIA, default= TIPOANOMALIA)
     tipo_servicio = models.CharField(max_length = 50, choices=TIPOSERVICIO, default= TIPOSERVICIO)
     # folio_seguimiento = models.CharField(max_length = 50, unique=True)
-    foto = models.CharField(max_length = 50)
+    foto = models.CharField(max_length = 200)
     prioridad = models.CharField(max_length = 20, choices=PRIORIDAD, default= PRIORIDAD)
     descripcion = models.CharField(max_length = 200)
     # -----------esos datos ya vienen implícitos en el reporte del usuario---------

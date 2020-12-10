@@ -129,29 +129,31 @@
                 </div>
             </div>
 
+            <div class="form-group col-md-6">
+            <label for="selecEmpleado">Sobrestante Asignado: </label> 
+            {% if sobrestante %}
+                <select name="seleccionarSobrestante" class="form-control">
+                {% if estado == 'Nuevo' %}
+                    <option value="" selected>NO ASIGNADO</option> 
+                    {% for empleado in empleadosDisponibles %}
+                        <option  value="{{empleado.id}}">{{ empleado.nombre }} {{ empleado.apellidos }} {{empleado.num_empleado}}</option> 
+                    {% endfor %}
+                {% else %}
+                    <option value="" disabled selected hidden> {{empleadoActual}} </option> 
+                    {% for empleado in empleadosDisponibles %}                   
+                        <option value="{{empleado.id}}">{{empleado.num_empleado}}  {{ empleado.nombre }} {{ empleado.apellidos }} </option>                         
+                    {% endfor %}
+                {% endif%}    
+                </select> 
 
-
-
-            <label for="selecEmpleado">Sobrestante Asignado: </label> {% if sobrestante %}
-            <select name="seleccionarSobrestante" class="form-control">
-            <!-- <option value="-" selected>NO ASIGNADO</option>     -->
-            {% if estado == 'Nuevo' %}
-
-                <option value="" selected>NO ASIGNADO</option> 
-                {% for empleado in sobrestante %}
-                    <option  value="{{empleado.id}}">{{ empleado.nombre }} {{ empleado.apellidos }} {{empleado.num_empleado}}</option> 
-                {% endfor %}
+            </div>
             {% else %}
-                {% for empleado in sobrestante %}
-                    {% if idEmpleadoReporte == empleado.id %}                
-                        <option value="{{empleado.id}}" selected>{{ empleado.nombre }} {{ empleado.apellidos }} {{empleado.num_empleado}}</option> 
-                    {% else %}
-                        <option value="{{empleado.id}}">{{ empleado.nombre }} {{ empleado.apellidos }} {{empleado.num_empleado}}</option> 
-                    {% endif %}
-            {% endfor %}
-            {% endif%}    
-        </select> {% else %}
-            <p>No hay empleados</p>
+                <p>No hay empleados</p>
+            {% endif %}
+            {% if advertencia != 'no'%}
+                <div class="form-group col-md-6">
+                <label for="advertencia">{{ advertencia }}</label> 
+                </div>
             {% endif %}
             <div style="padding: 1%;">
                 <input type="submit" value="Modificar" class="btn btn-warning btn-lg btn-block">
@@ -159,9 +161,9 @@
     </form>
     </div>
     <div class="container" style="padding: 1%;">
-        <a href="/reportesUsuarios/"><input type="submit" value="Cancelar" class="btn btn-secondary btn-lg btn-block"></a>
+        <a href="/reportesUsuarios/"><input type="" value="Cancelar" class="btn btn-secondary btn-lg btn-block"></a>
     </div>
-    <h1>Sobrestantes Disponibles</h1>
+    <h1>Sobrestantes Disponibles en: {{ tipoServicio }}</h1>
     <ul>
         {% if empleadosDisponibles %} {% for empleadoDis in empleadosDisponibles %}
         <li> {{ empleadoDis }}</li>
@@ -169,12 +171,21 @@
         <li>No hay empleados disponibles</li>
         {% endif %}
     </ul>
-    <h1>Sonbrestantes con reporte Asignado</h1>
+    <h1>Sonbrestantes con reporte Asignado en: {{ tipoServicio }}</h1>
     <ul>
         {% if empleadosEnFuga %} {% for empleadoNoDis in empleadosEnFuga %}
         <li> {{ empleadoNoDis }} </li>
         {% endfor %} {% else %}
         <li>No hay empleados con reportes Asignados</li>
+        {% endif %}
+    </ul>
+    <h1>Sonbrestantes Fuera de servicio en: {{ tipoServicio }}</h1>
+    <ul>
+        {% if empleadosFuera %} {% for empleadosFS in empleadosFuera %}
+        <li> {{ empleadosFS }} </li>
+        {% endfor %} 
+        {% else %}
+        <li>No hay empleados Fuera de servicio</li>
         {% endif %}
     </ul>
 

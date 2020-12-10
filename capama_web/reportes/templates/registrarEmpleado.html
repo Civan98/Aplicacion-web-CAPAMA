@@ -126,13 +126,18 @@
                     <label for="cp">Repetir contraseña</label> {%render_field formularioEmpleado.temp_contrasena type="password" class+="form-control"%}
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="disponibilidad">Disponibilidad</label> {%render_field formularioEmpleado.disponibilidad  class+="form-control"%}
+                </div>
+            </div>
 
 
             <input type="submit" value="Registrar" class="btn btn-warning btn-lg btn-block">
         </form>
         <div style="padding: 1%;"></div>
         <div class="container">
-            <a href="/reportesEmpleados/"><input type="submit" value="volver" class="btn btn-secondary btn-lg btn-block"></a>
+            <a href="/mostrarEmpleados/"><input type="" value="volver" class="btn btn-secondary btn-lg btn-block"></a>
         </div>
         <div style="padding: 2%;"></div>
         {% bootstrap_javascript jquery='full' %}

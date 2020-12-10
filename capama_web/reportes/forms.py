@@ -82,16 +82,23 @@ class UsuarioForm(forms.ModelForm):
 class EmpleadoForm(forms.ModelForm):
     CARGOS =(
         ('Administrador', 'Administrador'),
-        ('Sobrestante', 'Sobrestante'),
+        ('Sobrestante', 'Sobrestante'),        
+        ('Pipas', 'Pipas'),
+        ('Alcantarillado', 'Alcantarillado')        
     )
-
+    DISPONIBLE =(
+        ('Disponible','Disponible'),
+        ('En fuga','En fuga'),
+        ('Fuera de servicio','Fuera de servicio')
+    )
     temp_contrasena = forms.CharField(label='Repita su contraseña', max_length=45, required=True)
     cargo = forms.ChoiceField(required=True, choices=CARGOS)
+    disponibilidad = forms.ChoiceField(required=True, choices=DISPONIBLE)
    
     # disponibilidad = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly', 'hidden':'true'}))
     class Meta:
         model = Empleados
-        fields = ['nombre','apellidos','telefono', 'email', 'cargo', 'num_empleado','zona','colonia','calle','cp','contrasena']
+        fields = ['nombre','apellidos','telefono', 'email', 'cargo', 'num_empleado','zona','colonia','calle','cp','contrasena','disponibilidad']
         widgets ={
             'nombre': forms.TextInput(attrs={'placeholder':'Nombre completo'}),
             'apellidos': forms.TextInput(attrs={'placeholder':'Apellidos'}),

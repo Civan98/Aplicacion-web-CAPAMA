@@ -159,29 +159,33 @@ def registrarUsuario(request):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def registrarEmpleado(request):
+    
     if 'member_id' in request.session:
         if request.method =='POST':
+            
             datosObtenidos = EmpleadoForm(request.POST)
             num_empleadoForm = request.POST['num_empleado']
             emailObtenido = request.POST['email']
-            if Empleados.objects.filter(email = emailObtenido).exists():
+            if Empleados.objects.filter(email = emailObtenido).exists():                
                 error ='Error: su email ya ha sido registrado'
                 context= {
                     'formularioUsuario':datosObtenidos,
                     'error':error
                     }
-                return render(request, 'registrarUsuario.html', context)
+                return render(request, 'registrarEmpleado.html', context)
 
             if Empleados.objects.filter(num_empleado = num_empleadoForm).exists():
+                
                 error ='Error: su número de usuario ya ha sido registrado'
                 context= {
                     'formularioUsuario':datosObtenidos,
                     'error':error
                     }
-                return render(request, 'registrarUsuario.html', context)
+                return render(request, 'registrarEmpleado.html', context)
 
 
             if datosObtenidos.is_valid():
+                print('prueba en valid')
                 print(datosObtenidos)        
                 datosObtenidos.save()
                 datosObtenidos = EmpleadoForm()
@@ -297,7 +301,6 @@ def mostrarEmpleados(request):
     if 'member_id' in request.session:
         infoEmpleados = Empleados.objects.all()
 
-
          #para poder filtrar
         myFilter = MostrarEmpleadoFilter(request.GET, queryset=infoEmpleados)
         infoEmpleados  = myFilter.qs
@@ -362,7 +365,8 @@ def modificarEmpleados(request, idEmpleado):
                 datosEmpleado.colonia = request.POST['colonia']
                 datosEmpleado.calle = request.POST['calle']
                 datosEmpleado.cp = request.POST['cp']
-                datosEmpleado.contrasena = request.POST['contrasena']
+                datosEmpleado.contrasena = request.POST['contrasena']                
+                datosEmpleado.disponibilidad = request.POST['disponibilidad']                
                 datosEmpleado.save()
                 formModificarEmpleado = EmpleadoForm(request.POST)
                 # formModificarEmpleado = EmpleadoForm(initial=datosExtraidos)
@@ -388,20 +392,44 @@ def detallesReporteUsuario(request, idReporte):
     if 'member_id' in request.session:
         # obtener los datos del reporte para después popular el formulario
         datosReporte = ReportesUsuario.objects.get(id = idReporte)
+        # obtener el id del empleado antiguo, para cambiarlo a disponible si a este lo asignaron a una fuga
+        if(datosReporte.id_empleado is not None):
+            empleadoAnterior = datosReporte.id_empleado.id
+            datosEmpleadoAnterior = datosReporte.id_empleado        
+            estadoEmp = datosReporte.id_empleado.disponibilidad
+            advertencia ="no"
+            if(estadoEmp == 'Fuera de servicio'):
+                advertencia = "Empleado fuera de servicio, asigne otro empleado"
+        else:
+            empleadoAnterior = ""
+            datosEmpleadoAnterior = ""        
+            estadoEmp = ""
+            advertencia ="no"
+        # print(datosReporte.id_empleado.id)
+        cargoEmpleado = ""
+        # determinar el tipo de reporte para poder mostrar los empleados asociados a ese problema
+        if(datosReporte.tipo_servicio == 'Agua potable'):
+            cargoEmpleado = 'Sobrestante'
+        elif(datosReporte.tipo_servicio == 'Pipas'):
+            cargoEmpleado = 'Pipas'
+        else:
+            cargoEmpleado = 'Alcantarillado'
+
         # popular el combo de empleado a asignar con sólo sobrestantes y dependiendo de la zona de la fuga
-        sobrestante = Empleados.objects.filter(cargo = 'Sobrestante', zona = datosReporte.zona)
+        sobrestante = Empleados.objects.filter(cargo = cargoEmpleado, zona = datosReporte.zona)
 
-        # extraer los empleados disponibles y los que etán en fuga, y asignarlos a una lista
-        listaEmpleadosDisponibles = []
-        listaEmpleadosEnFuga = []
-        
+        listaEmpleadosDisponibles = Empleados.objects.filter(cargo = cargoEmpleado, zona = datosReporte.zona, disponibilidad ='Disponible')
+        listaEmpleadosEnFuga = Empleados.objects.filter(cargo = cargoEmpleado, zona = datosReporte.zona, disponibilidad ='En fuga')
+        listaEmpleadosFuera = Empleados.objects.filter(cargo = cargoEmpleado, zona = datosReporte.zona, disponibilidad ='Fuera de servicio')
 
-
-        for datosE in sobrestante:
-            if(datosE.disponibilidad == 'Disponible'):
-                listaEmpleadosDisponibles.append(datosE.nombre +' ' +datosE.apellidos +'| Num empleado: '+datosE.num_empleado)
-            else:
-                listaEmpleadosEnFuga.append(datosE.nombre +' ' +datosE.apellidos +'| Num empleado: '+datosE.num_empleado)    
+        # for datosE in sobrestante:
+            
+        #     if(datosE.disponibilidad == 'Disponible'):
+        #         listaEmpleadosDisponibles.append('Num empleado: '+datosE.num_empleado+'  '+datosE.nombre +' ' +datosE.apellidos )
+        #     elif(datosE.disponibilidad == 'En fuga'):
+        #         listaEmpleadosEnFuga.append('Num empleado: '+datosE.num_empleado +'  '+datosE.nombre +' ' +datosE.apellidos)    
+        #     else:
+        #         listaEmpleadosFuera.append('Num empleado: '+datosE.num_empleado +'  '+datosE.nombre +' ' +datosE.apellidos)  
 
 
 
@@ -443,54 +471,77 @@ def detallesReporteUsuario(request, idReporte):
         #     print('con empleado asignado')
 
         if request.method =='POST':
+            
             # si no hay empleados, que no haga alguna acción
             if (len(listaEmpleadosEnFuga) ==0 and len(listaEmpleadosDisponibles)==0):
                 
                 return redirect('/reportesUsuarios')
-            # sólo los reportes nuevos se pueden editar
-            if datosReporte.estado == 'Nuevo':   
-                # print('datos '+datosReporte.id_empleado)                      
-                if(request.POST['seleccionarSobrestante']!="" and datosReporte.id_empleado is None):
+            # sólo los reportes nuevos se pueden editar o en proceso. *puede que también los monitoreados.*
+            if (datosReporte.estado == 'Nuevo' or datosReporte.estado == 'En proceso'):               
+                #para que no se pueda modificar si ya hay asignado un sobrestante
+                # if(request.POST['seleccionarSobrestante']!="" and datosReporte.id_empleado is None):
+                # para que se modifique o cambie de sobrestante por si el anterior no logró resolver
+                # el get y false evita el multivaluekey error, es para saber si no han seleccionado nada
+                if(request.POST.get('seleccionarSobrestante',False)):
+                    # poner disponible al usuario antigio si este no está fuera de servicio
+                    if(estadoEmp != 'Fuera de servicio' and datosReporte.id_empleado is not None):
+                        empleadoReporteAnterior = Empleados.objects.get(id = empleadoAnterior)
+                        empleadoReporteAnterior.disponibilidad = 'Disponible'
+                        empleadoReporteAnterior.save()
+
                     # modificar la disponibilidad del empleado a 'En fuga', para ello debemos obtener su instancia
                     idEmpleadoAsignado = request.POST['seleccionarSobrestante']
                     empleadoAsignado = Empleados.objects.get(id = idEmpleadoAsignado)
                     empleadoAsignado.disponibilidad = 'En fuga'
                     empleadoAsignado.save()
+
                     # Modificamos el reporte para asignar al sobrestante seleccionado y su estado
                     # print(empleadoAsignado)
                     datosReporte.estado = 'En proceso' 
                     datosReporte.id_empleado = empleadoAsignado
                     datosReporte.save()
-                    # obtener el id del empleado en crudo para que el combobox se quede con el empleado que está asignado,
-                    # el método __str__ de los reportes del usuario devuelve algo asó: 1.- aslkñdj, por ello, corto el string hasta el "."y tomo su primera posición, el cuál sería el '1' en este caso
-                    idEmpleadoCombo = str(datosReporte.id_empleado)
-                    idEmpleadoRaw = idEmpleadoCombo.split('.')
+                    # obtener el id del empleado en crudo para que el combobox se quede con el empleado que está asignado, siguiendo la relación                                 
+                    idEmpleadoRaw = datosReporte.id_empleado.id                                        
                     # rellenar nuevamente el formulario con los datos
                     datos['estado'] = datosReporte.estado
                     #inicializar el formulario con los datos del reporte seleccionado
                     reporteU = DetallesReporteUsuarioForm(initial=datos) 
-                    redirect('detallesReporteUsuario/'+str(idReporte))
-                    print('datos in'+datos['estado'])
+                    # redirect('detallesReporteUsuario/'+str(idReporte))
+                    #  rellenar los empleados disponibles
+                    sobrestante = Empleados.objects.filter(cargo = cargoEmpleado, zona = datosReporte.zona)
+                    # extraer los empleados disponibles y los que etán en fuga, y asignarlos a una lista
+                             
+                    listaEmpleadosDisponibles = Empleados.objects.filter(cargo = cargoEmpleado, zona = datosReporte.zona, disponibilidad ='Disponible')
+                    listaEmpleadosEnFuga = Empleados.objects.filter(cargo = cargoEmpleado, zona = datosReporte.zona, disponibilidad ='En fuga')
+                    listaEmpleadosFuera = Empleados.objects.filter(cargo = cargoEmpleado, zona = datosReporte.zona, disponibilidad ='Fuera de servicio') 
+                    datosEmpleadoAnterior = datosReporte.id_empleado        
+                    empleadoAnterior = datosReporte.id_empleado.id
+                    advertencia ="no"
+                    # print('datos in'+datos['estado'])
 
                 else:
                     print('no entra if')
                     # para evitar cuando se le mueve directo a la bd se vuelve a comprobar los sobrestantes y el combo aparezca como no asignado
-                    sobrestante = Empleados.objects.filter(cargo = 'Sobrestante', zona = datosReporte.zona)
+                    sobrestante = Empleados.objects.filter(cargo = cargoEmpleado, zona = datosReporte.zona)
             
             else:
-                # rellenar el combo con el empleado asignado si noes nuevo el reporte
-                idEmpleadoCombo = str(datosReporte.id_empleado)
-                idEmpleadoRaw = idEmpleadoCombo.split('.')            
+                # rellenar el combo con el empleado asignado si noes nuevo el reporte                
+                idEmpleadoRaw = datosReporte.id_empleado.id            
                 # mostrar alguna advertencia de si el reporte ya se le asignó un sobrestante
-                
-        print('prueba '+ idEmpleadoRaw[0])
+
+                           
         context = {
             'datosReporte': reporteU,   
             'sobrestante':sobrestante,
             'estado': datosReporte.estado,
-            'idEmpleadoReporte': int(idEmpleadoRaw[0]),
+            'idEmpleadoReporte': idEmpleadoRaw,
             'empleadosDisponibles': listaEmpleadosDisponibles,
-            'empleadosEnFuga': listaEmpleadosEnFuga
+            'empleadosEnFuga': listaEmpleadosEnFuga,            
+            'empleadosFuera': listaEmpleadosFuera,
+            'advertencia':advertencia,
+            'empleadoActual': datosEmpleadoAnterior,
+            'idEmpleadoActual': empleadoAnterior,
+            'tipoServicio': datosReporte.tipo_servicio,
         }
 
         return render(request, 'reportes/detallesReporteUsuario.html', context)

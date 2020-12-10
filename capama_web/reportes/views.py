@@ -362,7 +362,7 @@ def detallesReporteUsuario(request, idReporte):
             'folio_seguimiento':datosReporte.folio_seguimiento,
             'foto':datosReporte.foto,
             'prioridad':datosReporte.prioridad,
-            'geoLocalizacion':datosReporte.geoLocalizacion,
+            'geoLocalizacion':datosReporte.geolocalizacion,
             'colonia':datosReporte.colonia,
             'calle':datosReporte.calle,
             'cp':datosReporte.cp, 

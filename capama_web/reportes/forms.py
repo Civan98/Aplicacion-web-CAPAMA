@@ -3,8 +3,21 @@ from .models import Usuarios, Empleados, ReportesUsuario
 import re
 
 class FormLogin(forms.Form):
-    email    = forms.EmailField(label= 'Correo Electronico')
-    password = forms.CharField(label= 'Contraseña', max_length=32, widget=forms.PasswordInput)
+    email    = forms.EmailField(
+    label= 'Correo Electrónico',
+    widget = forms.EmailInput(attrs=
+        {
+            'class':'form-control',
+            'placeholder': 'correo@dominio.com'
+        }))
+
+    password = forms.CharField(
+        label= 'Contraseña', max_length=32, widget=forms.PasswordInput(
+        attrs = 
+        {
+            'class':'form-control',
+            'placeholder':'tu contraseña'
+        }))
 
 class UsuarioForm(forms.ModelForm):
     # campo de contraseña temporal para validaciones
@@ -85,7 +98,7 @@ class EmpleadoForm(forms.ModelForm):
             'telefono': forms.NumberInput(attrs={'placeholder':'ej. 7441010122'}),
             'email': forms.EmailInput(attrs={'placeholder':'example@example.com'}),
             'cp': forms.NumberInput(attrs={'placeholder':'ej. 39920'}),
-            'num_empleado': forms.TextInput(attrs={'placeholder':'ej. por modificar'})
+            'num_empleado': forms.TextInput(attrs={'placeholder':'Número de empleado único'})
         }
     
 
@@ -127,22 +140,21 @@ class DetallesReporteUsuarioForm(forms.ModelForm):
 
 
     # campos de sólo lectura
-    zona = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    tipo_anomalia = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    folio_seguimiento = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    foto = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    prioridad = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    geoLocalizacion = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    colonia = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    calle = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    cp = forms.IntegerField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    num_interior = forms.IntegerField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    num_exterior = forms.IntegerField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    descripcion = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    fecha = forms.DateTimeField( widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    id_usuario = forms.CharField(label='Usuario',widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    estado = forms.CharField(label='Estado',widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    
+    zona = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    tipo_anomalia = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    folio_seguimiento = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    foto = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    prioridad = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    geoLocalizacion = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    colonia = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    calle = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    cp = forms.IntegerField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    num_interior = forms.IntegerField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    num_exterior = forms.IntegerField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    descripcion = forms.CharField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    fecha = forms.DateTimeField( widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    id_usuario = forms.CharField(label='Usuario',widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
+    estado = forms.CharField(label='Estado',widget=forms.TextInput(attrs={'readonly':'readonly','class':'form-control','disabled':'true'}))
 
     class Meta:
         model= ReportesUsuario

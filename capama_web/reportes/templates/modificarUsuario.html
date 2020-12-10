@@ -1,21 +1,134 @@
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Usuario</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet"> {% load bootstrap4 %} {# CSS Bootstrap #} {% bootstrap_css %}
+
+
+
+    <style>
+        body {
+            background-size: cover;
+            font-family: 'poppins';
+        }
+    </style>
+
 </head>
+
+
 <body>
-    {% if error %}
-    <p> {{error}} </p>
-    {% endif %}
-    <form action="" method="post" style=" border: 1px dotted #999;">
-        {% csrf_token %} 
-        {{datosNuevos}}
-        <input type="submit" value="Modificar">        
-    </form>
-    <a href="/mostrarUsuarios/">
-        <input type="submit" value="Cancelar">
-     </a>
+    <nav class="navbar navbar-expand-lg" style="background-color: #2465C9;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation"> 
+            <span  style="color: white; font-size: 36px;"> 
+                <i class="fas fa-bars"></i>
+            </span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <a class="navbar-brand" href="#">
+                <img src="https://www.capama.gob.mx/recursos/imagenes/capama_r.png" alt="" style="width: 30%;">
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+                        {% if cargo == 'Sobrestante' %}
+                        Sobrestante
+
+                     {% else %}
+                    Administrador
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/logout/">Salir</a>
+                        <a class="dropdown-item" href="/reportesUsuarios/">Reporte de usuarios</a>
+                        <a class="dropdown-item" href="/reportesEmpleados/">Reporte de empleados</a>
+                        <a class="dropdown-item" href="/registrarUsuario/">Registrar nuevo usuario</a>
+                        <a class="dropdown-item" href="/registrarEmpleado/">Registrar nuevo empleado</a>
+                        <a class="dropdown-item" href="/mostrarUsuarios/">Mostrar usuarios registrados</a>
+                        <a class="dropdown-item" href="/mostrarEmpleados/">Mostrar empleados registrados</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    </nav>
+    <div style="padding: 2%;"></div>
+    <div class="container">
+        {% if error %}
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Ocurrió un error!</strong> {{error}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        <form action="" method="post">
+            {% csrf_token %} {%render_field formularioEmpleado.nombre class+="form-control"%}
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="nombre">Nombre</label> {%render_field datosNuevos.nombre class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="apellidos">Apellidos</label> {%render_field datosNuevos.apellidos class+="form-control"%}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="telefono">Teléfono</label> {%render_field datosNuevos.telefono class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="email">Correo electrónico</label> {%render_field datosNuevos.email class+="form-control"%}
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="num_contrato">Número de contrato</label> {%render_field datosNuevos.num_contrato class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="colonia">Colonia</label> {%render_field datosNuevos.colonia class+="form-control"%}
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="calle">Calle</label> {%render_field datosNuevos.calle class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cp">Código postal</label> {%render_field datosNuevos.cp class+="form-control"%}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="contrasena">Contraseña</label> {%render_field datosNuevos.contrasena type="password" class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="temp_contrasena">Repetir contraseña</label> {%render_field datosNuevos.temp_contrasena type="password" class+="form-control"%}
+                </div>
+            </div>
+
+            <input type="submit" value="Modificar" class="btn btn-warning btn-lg btn-block">
+        </form>
+    </div>
+    <div style="padding: 1%;"></div>
+    <div class="container">
+        <a href="/mostrarUsuarios/">
+            <input type="submit" value="Cancelar" class="btn btn-secondary btn-lg btn-block"></a>
+    </div>
+    <div style="padding: 2%;"></div>
+    {% bootstrap_javascript jquery='full' %}
+
 </body>
+
 </html>

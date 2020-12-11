@@ -73,45 +73,75 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="nombre">Nombre</label> {%render_field formularioUsuario.nombre class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{formularioUsuario.nombre.errors }}
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="apellidos">Apellidos</label> {%render_field formularioUsuario.apellidos class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{formularioUsuario.apellidos.errors }}
+                    </div>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="telefono">Teléfono</label> {%render_field formularioUsuario.telefono class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{formularioUsuario.telefono.errors }}
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="email">Correo electrónico</label> {%render_field formularioUsuario.email class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{formularioUsuario.email.errors }}
+                    </div>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="num_contrato">Número de contrato</label> {%render_field formularioUsuario.num_contrato class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{formularioUsuario.num_contrato.errors }}
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="colonia">Colonia</label> {%render_field formularioUsuario.colonia class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{formularioUsuario.colonia.errors }}
+                    </div>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="calle">Calle</label> {%render_field formularioUsuario.calle class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{formularioUsuario.calle.errors }}
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="cp">CP</label> {%render_field formularioUsuario.cp class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{formularioUsuario.cp.errors }}
+                    </div>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="contrasena">Contraseña</label> {%render_field formularioUsuario.contrasena type="password" class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{formularioUsuario.contrasena.errors }}
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="temp_contrasena">Repetir contraseña</label> {%render_field formularioUsuario.temp_contrasena type="password" class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{formularioUsuario.temp_contrasena.errors }}
+                    </div>
                 </div>
             </div>
 

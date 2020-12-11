@@ -75,29 +75,53 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="nombre">Nombre</label> {{formularioEmpleado.nombre}}
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.nombre.errors }}
 
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="apellidos">Apellidos</label> {{formularioEmpleado.apellidos}}
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.apellidos.errors }}
+
+                    </div>
                 </div>
             </div>
 
             <div class="form-row">
-                <div class="form-group col-md-6">                
-                    <label for="telefono">Teléfono</label> {%render_field formularioEmpleado.telefono  minlength="10" %}
-                    {{formularioEmpleado.telefono.errors }}
+                <div class="form-group col-md-6">
+                    <label for="telefono">Teléfono</label> {%render_field formularioEmpleado.telefono minlength="10" %}
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.telefono.errors }}
+                    </div>
+
+
                 </div>
                 <div class="form-group col-md-6">
                     <label for="email">email</label> {{formularioEmpleado.email}}
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.email.errors }}
+                    </div>
+
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="num_empleado">Número de empleado</label> {{formularioEmpleado.num_empleado}}
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.num_empleado.errors }}
+                    </div>
+
                 </div>
                 <div class="form-group col-md-6">
                     <label for="{{formularioEmpleado.colonia.label}}">{{formularioEmpleado.colonia.label}}</label> {%render_field formularioEmpleado.colonia class+="form-control"%}
+
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.colonia.errors }}
+                    </div>
+
 
                 </div>
             </div>
@@ -105,28 +129,56 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="{{formularioEmpleado.calle.label}}">{{formularioEmpleado.calle.label}}</label> {%render_field formularioEmpleado.calle class+="form-control"%}
+
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.calle.errors }}
+                    </div>
+
                 </div>
                 <div class="form-group col-md-6">
                     <label for="cp">Código postal</label>{{formularioEmpleado.cp}}
+
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.cp.errors }}
+                    </div>
+
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="{{formularioEmpleado.cargo.label}}">{{formularioEmpleado.cargo.label}}</label> {%render_field formularioEmpleado.cargo class+="form-control"%}
+
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.cargo.errors }}
+                    </div>
+
                 </div>
                 <div class="form-group col-md-6">
                     <label for="{{formularioEmpleado.zona.label}}">{{formularioEmpleado.zona.label}}</label> {%render_field formularioEmpleado.zona class+="form-control"%}
+
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.zona.errors }}
+                    </div>
+
                 </div>
             </div>
 
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="calle">Contraseña</label> {{formularioEmpleado.contrasena}}
+                    <label for="contrasena">Contraseña</label> {{formularioEmpleado.contrasena}}
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.contrasena.errors }}
+
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cp">Repetir contraseña</label> {{formularioEmpleado.temp_contrasena}}
+                    <label for="temp_contrasena">Repetir contraseña</label> {{formularioEmpleado.temp_contrasena}}
+                    <div class="container" style="color: red;">
+                        {{formularioEmpleado.temp_contrasena.errors }}
+                    </div>
+
                 </div>
             </div>
             <div class="form-row">

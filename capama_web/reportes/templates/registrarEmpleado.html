@@ -74,61 +74,65 @@
             {% csrf_token %}
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="nombre">Nombre</label> {%render_field formularioEmpleado.nombre class+="form-control"%}
+                    <label for="nombre">Nombre</label> {{formularioEmpleado.nombre}}
+
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="apellidos">Apellidos</label> {%render_field formularioEmpleado.apellidos class+="form-control"%}
+                    <label for="apellidos">Apellidos</label> {{formularioEmpleado.apellidos}}
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="telefono">Teléfono</label> {%render_field formularioEmpleado.telefono class+="form-control"%}
+                    <label for="telefono">Teléfono</label> {{formularioEmpleado.telefono}}
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="email">email</label> {%render_field formularioEmpleado.email class+="form-control"%}
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="num_empleado">Número de empleado</label> {%render_field formularioEmpleado.num_empleado class+="form-control"%}
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="colonia">Colonia</label> {%render_field formularioEmpleado.colonia class+="form-control"%}
+                    <label for="email">email</label> {{formularioEmpleado.email}}
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="calle">Calle</label> {%render_field formularioEmpleado.calle class+="form-control"%}
+                    <label for="num_empleado">Número de empleado</label> {{formularioEmpleado.num_empleado}}
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cp">Código postal</label> {%render_field formularioEmpleado.cp class+="form-control"%}
+                    <label for="{{formularioEmpleado.colonia.label}}">{{formularioEmpleado.colonia.label}}</label> {%render_field formularioEmpleado.colonia class+="form-control"%}
+
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="cargo">Cargo</label> {%render_field formularioEmpleado.cargo class+="form-control"%}
+                    <label for="{{formularioEmpleado.calle.label}}">{{formularioEmpleado.calle.label}}</label> {%render_field formularioEmpleado.calle class+="form-control"%}
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="zona">Zona</label> {%render_field formularioEmpleado.zona class+="form-control"%}
+                    <label for="cp">Código postal</label>{{formularioEmpleado.cp}}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="{{formularioEmpleado.cargo.label}}">{{formularioEmpleado.cargo.label}}</label> {%render_field formularioEmpleado.cargo class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="{{formularioEmpleado.zona.label}}">{{formularioEmpleado.zona.label}}</label> {%render_field formularioEmpleado.zona class+="form-control"%}
                 </div>
             </div>
 
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="calle">Contraseña</label> {%render_field formularioEmpleado.contrasena type="password" class+="form-control"%}
+                    <label for="calle">Contraseña</label> {{formularioEmpleado.contrasena}}
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cp">Repetir contraseña</label> {%render_field formularioEmpleado.temp_contrasena type="password" class+="form-control"%}
+                    <label for="cp">Repetir contraseña</label> {{formularioEmpleado.temp_contrasena}}
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="disponibilidad">Disponibilidad</label> {%render_field formularioEmpleado.disponibilidad  class+="form-control"%}
+                    <label for="{{formularioEmpleado.disponibilidad.label}}">{{formularioEmpleado.disponibilidad.label}}
+                    </label> {%render_field formularioEmpleado.disponibilidad class+="form-control"%}
+
                 </div>
             </div>
 

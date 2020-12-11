@@ -36,7 +36,7 @@ class UsuarioForm(forms.ModelForm):
             'apellidos': forms.TextInput(attrs={'placeholder':'Apellidos'}),
             'telefono': forms.NumberInput(attrs={'placeholder':'ej. 7441010122'}),
             'email': forms.EmailInput(attrs={'placeholder':'example@example.com'}),
-            'cp': forms.NumberInput(attrs={'placeholder':'ej. 39920','minlenght':5, 'maxlenght':5}),
+            'cp': forms.NumberInput(attrs={'placeholder':'ej. 39920','minlenght':5, 'maxlenght':5,'required':'true'}),
             'num_contrato': forms.TextInput(attrs={'placeholder':'ej. 111-222-3333-1'})
         }
 
@@ -91,7 +91,8 @@ class EmpleadoForm(forms.ModelForm):
         ('En fuga','En fuga'),
         ('Fuera de servicio','Fuera de servicio')
     )
-    temp_contrasena = forms.CharField(label='Repita su contraseña', max_length=45, required=True)
+    temp_contrasena = forms.CharField(label='Repita su contraseña', max_length=45, required=True,widget=forms.TextInput(attrs={"class":"form-control"}))
+    contrasena = forms.CharField(label='Contraseña', max_length=45, min_length=4, required=True,widget=forms.TextInput(attrs={"class":"form-control"}))
     cargo = forms.ChoiceField(required=True, choices=CARGOS)
     disponibilidad = forms.ChoiceField(required=True, choices=DISPONIBLE)
    
@@ -100,12 +101,12 @@ class EmpleadoForm(forms.ModelForm):
         model = Empleados
         fields = ['nombre','apellidos','telefono', 'email', 'cargo', 'num_empleado','zona','colonia','calle','cp','contrasena','disponibilidad']
         widgets ={
-            'nombre': forms.TextInput(attrs={'placeholder':'Nombre completo'}),
-            'apellidos': forms.TextInput(attrs={'placeholder':'Apellidos'}),
-            'telefono': forms.NumberInput(attrs={'placeholder':'ej. 7441010122'}),
-            'email': forms.EmailInput(attrs={'placeholder':'example@example.com'}),
-            'cp': forms.NumberInput(attrs={'placeholder':'ej. 39920'}),
-            'num_empleado': forms.TextInput(attrs={'placeholder':'Número de empleado único'})
+            'nombre': forms.TextInput(attrs={'placeholder':'Nombre completo',"class":"form-control"}),
+            'apellidos': forms.TextInput(attrs={'placeholder':'Apellidos',"class":"form-control"}),
+            'telefono': forms.NumberInput(attrs={'placeholder':'ej. 7441010122',"class":"form-control"}),
+            'email': forms.EmailInput(attrs={'placeholder':'example@example.com',"class":"form-control"}),
+            'cp': forms.NumberInput(attrs={'placeholder':'ej. 39920','required':'true',"class":"form-control"}),
+            'num_empleado': forms.TextInput(attrs={'placeholder':'Número de empleado único',"class":"form-control"})
         }
     
 

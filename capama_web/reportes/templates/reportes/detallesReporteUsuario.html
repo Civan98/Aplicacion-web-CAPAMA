@@ -208,7 +208,7 @@
         var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [-99.82463085079553, 16.90008143882046],//coordenadas
+            center: ['{{longitud}}', '{{latitud}}'],//coordenadas
             zoom: 20
         });
         map.addControl(new mapboxgl.NavigationControl());//añade los controles
@@ -219,13 +219,13 @@
         element.className = 'marker'
 
         element.addEventListener('click',()=>{
-            window.alert('Estado: {{datosReporte.estado.value}} \nPrioridad: {{datosReporte.prioridad.value}}\nTipo de anomalía: {{datosReporte.tipo_anomalia.value}} ')
+            window.alert('Estado: {{datosReporte.estado.value}} \nPrioridad: {{datosReporte.prioridad.value}}\nTipo de anomalía: {{datosReporte.tipo_anomalia.value}}\n {{datosReporte.geoLocalizacion.value}} ')
         })
 
         let marker = new mapboxgl.Marker(element)
         .setLngLat({
-            lng: -99.82463085079553,
-            lat: 16.90008143882046
+            lng: '{{longitud}}',
+            lat: '{{latitud}}'
         })
         .addTo(map)
     </script>

@@ -11,11 +11,22 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
+
 
     <style>
         body {
             background-size: cover;
             font-family: 'poppins';
+        }
+        .marker{
+            background-image: url('https://res.cloudinary.com/ds4mzfzaf/image/upload/v1607666785/marcador_uh8dxn.png');
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
         }
     </style>
 
@@ -62,6 +73,7 @@
     <div style="padding: 5%;"></div>
     <div class="container" align="center">
         {% if datosReporteU %}
+        {{coordenadas}}
         <div class="table-responsive">
             <table class="table table-sm table-hover">
                 <thead class="thead-dark">
@@ -116,6 +128,36 @@
     <div class="container">
         <p>Espacio para foto y mapa</p>
     </div>
+
+    <h1>Mapa de la ubicación de la fuga</h1>
+
+    <div id='map' style='width: 400px; height: 300px;'></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2l2YW45OCIsImEiOiJja2d2c2tiNWMwM2N3MnJxZ3djNW5oemIzIn0.XvaJ7oRNEjfhk1ZcAcpYGA';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center:['{{longitud}}', '{{latitud}}'],//coordenadas
+            zoom: 20
+        });
+        map.addControl(new mapboxgl.NavigationControl());//añade los controles
+        map.addControl(new mapboxgl.FullscreenControl());//añade la pantalla completa
+
+        //marcador el diseño esta arriba  en la etiqueta de style
+        let element = document.createElement('div')
+        element.className = 'marker'
+
+        element.addEventListener('click',()=>{
+            window.alert('Estado: {{datosReporteU.estado}} \nPrioridad: {{datosReporteU.prioridad}}\nTipo de anomalía: {{datosReporteU.tipo_anomalia}} ')
+        })
+
+        let marker = new mapboxgl.Marker(element)
+        .setLngLat({
+            lng: '{{longitud}}',
+            lat: '{{latitud}}'
+        })
+        .addTo(map)
+    </script>
 
     {% bootstrap_javascript jquery='full' %}
 

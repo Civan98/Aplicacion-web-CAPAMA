@@ -29,6 +29,9 @@ def login(request):
                 try:
                     validar = Empleados.objects.get(email = infoForm['email'])#obtenemos los datos del usuario desde la BD
                     if  validar.contrasena == infoForm['password']:
+                        if validar.cargo == 'Pipas' or validar.cargo == 'Sobrestante' or validar.cargo == 'Alcantarillado':
+                            errores.append('Lo sentimos, No tienes acceso!')
+                        else:
                             request.session['member_id'] = validar.id
                             #request.session es un diccionario de datos, en el cual llenamos con información del usuario
                             return HttpResponseRedirect('/reportesUsuarios/')
@@ -384,7 +387,13 @@ def detallesReporteEmpleado(request, idReporte, idReporteM):
         datosReporte = ReportesUsuario.objects.get(id = idReporte)
         datosMateriales = Materiales.objects.filter(id_reporte_empleado_id = idReporteM)#id de la tabla de materiales
          
-        return render(request, 'reportes/detallesReporteEmpleado.html', {'datosReporteU': datosReporte, 'datosMateriales':datosMateriales })
+         #coordenadas
+        coordenadas = datosReporte.geolocalizacion.split(sep=',')
+        longitud = coordenadas[0]
+        latitud = coordenadas[1]
+
+
+        return render(request, 'reportes/detallesReporteEmpleado.html', {'datosReporteU': datosReporte, 'datosMateriales':datosMateriales, 'latitud':latitud, 'longitud':longitud})
     return HttpResponseRedirect('/login/')
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -437,6 +446,7 @@ def detallesReporteUsuario(request, idReporte):
         idEmpleadoRaw=[]
         idEmpleadoRaw.append('-1')
 
+        
     # datos para inicializar el formulario, se obtienen del reporte que se visualiza
         datos = {
             'zona':datosReporte.zona,
@@ -453,7 +463,7 @@ def detallesReporteUsuario(request, idReporte):
             'descripcion':datosReporte.descripcion,
             'fecha':datosReporte.fecha,
             'id_usuario':datosReporte.id_usuario,        
-            'estado': datosReporte.estado
+            'estado': datosReporte.estado,
         }
         #inicializar el formulario con los datos del reporte seleccionado
         reporteU = DetallesReporteUsuarioForm(initial=datos) 
@@ -529,7 +539,9 @@ def detallesReporteUsuario(request, idReporte):
                 idEmpleadoRaw = datosReporte.id_empleado.id            
                 # mostrar alguna advertencia de si el reporte ya se le asignó un sobrestante
 
-                           
+        #para partir las coordenadas
+        coordenadas = datosReporte.geolocalizacion.split(sep=',')
+                          
         context = {
             'datosReporte': reporteU,   
             'sobrestante':sobrestante,
@@ -542,6 +554,8 @@ def detallesReporteUsuario(request, idReporte):
             'empleadoActual': datosEmpleadoAnterior,
             'idEmpleadoActual': empleadoAnterior,
             'tipoServicio': datosReporte.tipo_servicio,
+            'longitud': coordenadas[0],
+            'latitud': coordenadas[1]
         }
 
         return render(request, 'reportes/detallesReporteUsuario.html', context)

@@ -29,6 +29,9 @@ def login(request):
                 try:
                     validar = Empleados.objects.get(email = infoForm['email'])#obtenemos los datos del usuario desde la BD
                     if  validar.contrasena == infoForm['password']:
+                        if validar.cargo == 'Pipas' or validar.cargo == 'Sobrestante' or validar.cargo == 'Alcantarillado':
+                            errores.append('Lo sentimos, No tienes acceso!')
+                        else:
                             request.session['member_id'] = validar.id
                             #request.session es un diccionario de datos, en el cual llenamos con información del usuario
                             return HttpResponseRedirect('/reportesUsuarios/')

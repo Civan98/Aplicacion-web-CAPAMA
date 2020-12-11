@@ -169,7 +169,7 @@ def registrarEmpleado(request):
             if Empleados.objects.filter(email = emailObtenido).exists():                
                 error ='Error: su email ya ha sido registrado'
                 context= {
-                    'formularioUsuario':datosObtenidos,
+                    'formularioEmpleado':datosObtenidos,
                     'error':error
                     }
                 return render(request, 'registrarEmpleado.html', context)
@@ -178,7 +178,7 @@ def registrarEmpleado(request):
                 
                 error ='Error: su número de usuario ya ha sido registrado'
                 context= {
-                    'formularioUsuario':datosObtenidos,
+                    'formularioEmpleado':datosObtenidos,
                     'error':error
                     }
                 return render(request, 'registrarEmpleado.html', context)

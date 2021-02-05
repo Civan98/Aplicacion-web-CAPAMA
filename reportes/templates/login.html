@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>CAPAMA| servicio de agua potable y saneamiento de Acapulco, Guerrero.</title>
+    {% load bootstrap4 %} {# CSS Bootstrap #} {% bootstrap_css %}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("https://upload.wikimedia.org/wikipedia/commons/8/85/Vista_a%C3%A9rea_de_Acapulco.jpg");
+            background-color: #cccccc83;
+            background-size: cover;
+            font-family: 'poppins';
+        }
+    </style>
+</head>
+
+<body>
+    <header style="margin-bottom: 10%;">
+        <nav class="navbar navbar-light" style="background-color: #4a4a4d;">
+            <div style="margin:auto;">
+
+                <div style="margin-left: 30%;">
+                    <img src="https://www.capama.gob.mx/recursos/imagenes/capama_r.png" class="d-inline-block align-top" alt="" style="width: 50%;">
+                </div>
+                <div>
+                    <h1 style="color: rgb(255, 255, 255);">
+                        Bienvenido al sistema de reporte de fugas de agua
+                    </h1>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    {% if errores %} {% for error in errores %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" style="width: 50%; margin: auto;">
+        <strong>Ocurrió un error! </strong>{{ error }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %} {% endif %}
+    <br>
+    <div class="jumbotron" style="width: 50%; padding:2%; margin:auto; background-color: rgb(255, 255, 255);">
+
+        <div class="form-group">
+            <form method="POST" action="/login/">{% csrf_token %}
+                <!---->
+                {% for field in form%}
+                <div class="form-group row" style="margin-left: 10%;">
+                    <label for="{{field.label}}" class="col-sm-4 col-form-label" style="font-family:'poppins'; font-size: large;">{{field.label}}</label>
+                    <div class="col-sm-5">
+                        {{field}}
+                    </div>
+                </div>
+                {%endfor%}
+
+                <div align="center">
+                    <input class="btn btn-primary btn-lg" type="submit" name="entrar" value="Enviar">
+                </div>
+                <br>
+                
+            </form>
+            <center>
+                <a href="/recuperarContrasena/">¿Olvidó su contraseña?</a>
+            </center>
+        </div>
+    </div>
+   
+    {% bootstrap_javascript jquery='full' %}
+    {% endblock %}
+</body>
+
+</html>

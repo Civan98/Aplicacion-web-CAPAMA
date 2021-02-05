@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Empleado</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet"> {% load bootstrap4 %} {# CSS Bootstrap #} {% bootstrap_css %}
+
+
+
+    <style>
+        body {
+            background-size: cover;
+            font-family: 'poppins';
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg" style="background-color: #2465C9;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation"> 
+            <span  style="color: white; font-size: 36px;"> 
+                <i class="fas fa-bars"></i>
+            </span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <a class="navbar-brand" href="#">
+                <img src="https://www.capama.gob.mx/recursos/imagenes/capama_r.png" alt="" style="width: 30%;">
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+                        {% if cargo == 'Sobrestante' %}
+                        Sobrestante
+
+                     {% else %}
+                    Administrador
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/logout/">Salir</a>
+                        <a class="dropdown-item" href="/reportesUsuarios/">Reporte de usuarios</a>
+                        <a class="dropdown-item" href="/reportesEmpleados/">Reporte de empleados</a>
+                        <a class="dropdown-item" href="/registrarUsuario/">Registrar nuevo usuario</a>
+                        <a class="dropdown-item" href="/registrarEmpleado/">Registrar nuevo empleado</a>
+                        <a class="dropdown-item" href="/mostrarUsuarios/">Mostrar usuarios registrados</a>
+                        <a class="dropdown-item" href="/mostrarEmpleados/">Mostrar empleados registrados</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="container" style="padding: 2%; text-align: center;">
+        <h1>Modificar empleado</h1>
+    </div>
+    <div class="container">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <strong>Advertencia:</strong> si coloca el estado del empleado como "Fuera de servicio", deberá asignar otro empleado en los reportes de usuario si este tenía reportes asignados
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        {% if error %}
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Ocurrió un error!</strong> {{error}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="nombre">Nombre</label> {%render_field datosNuevos.nombre class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="apellidos">Apellidos</label> {%render_field datosNuevos.apellidos class+="form-control"%}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">            
+                    <label for="telefono">Teléfono</label> {%render_field datosNuevos.telefono class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{datosNuevos.telefono.errors}}
+                    </div>                       
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="email">Correo electrónico</label> {%render_field datosNuevos.email class+="form-control"%}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="cargo">Cargo</label> {%render_field datosNuevos.cargo class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="num_empleado">Número de empleado</label> {%render_field datosNuevos.num_empleado class+="form-control"%}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="zona">Zona</label> {%render_field datosNuevos.zona class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="colonia">Colonia</label> {%render_field datosNuevos.colonia class+="form-control"%}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="calle">Calle</label> {%render_field datosNuevos.calle class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                
+                    <label for="cp">Código postal</label> {%render_field datosNuevos.cp class+="form-control"%}
+                    <div class="container" style="color: red;">
+                        {{ datosNuevos.cp.errors }}
+                    </div>                         
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                
+                    <label for="contrasena">Contraseña</label> {%render_field datosNuevos.contrasena type="password" class+="form-control"%} {{datosNuevos.contrasena.error}}
+                    <div class="container" style="color: red;">
+                        {{ datosNuevos.non_field_errors }}
+                    </div>                         
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="temp_contrasena">Repetir contraseña</label> {%render_field datosNuevos.temp_contrasena type="password" class+="form-control"%}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="disponibilidad">Disponibilidad</label> {%render_field datosNuevos.disponibilidad class+="form-control"%}
+                </div>
+                <div class="form-group col-md-6">
+                </div>
+            </div>
+
+            <input type="submit" value="Modificar" class="btn btn-warning btn-lg btn-block">
+        </form>
+        <div style="padding: 1%;"></div>
+        <a href="/mostrarEmpleados/">
+            <input type="submit" value="Cancelar" class="btn btn-secondary btn-lg btn-block">
+        </a>
+        <div style="padding: 2%;"></div>
+    </div>
+    {% bootstrap_javascript jquery='full' %}
+    {% endblock %}
+</body>
+
+</html>

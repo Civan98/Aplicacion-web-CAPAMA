@@ -1,0 +1,182 @@
+{% extends "../base.html" %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del reporte de empleado</title>
+
+    {% load bootstrap4 %} {# CSS Bootstrap #} {% bootstrap_css %}
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
+
+
+    <style>
+        body {
+            background-size: cover;
+            font-family: 'poppins';
+        }
+        
+        .marker {
+            background-image: url('https://res.cloudinary.com/ds4mzfzaf/image/upload/v1607666785/marcador_uh8dxn.png');
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-expand-lg" style="background-color: #2465C9;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation"> 
+            <span  style="color: white; font-size: 36px;"> 
+                <i class="fas fa-bars"></i>
+            </span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <a class="navbar-brand" href="#">
+                <img src="https://www.capama.gob.mx/recursos/imagenes/capama_r.png" alt="" style="width: 30%;">
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+                        {% if cargo == 'Sobrestante' %}
+                        Sobrestante
+
+                     {% else %}
+                    Administrador
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/logout/">Salir</a>
+                        <a class="dropdown-item" href="/reportesUsuarios/">Reporte de usuarios</a>
+                        <a class="dropdown-item" href="/reportesEmpleados/">Reporte de empleados</a>
+                        <a class="dropdown-item" href="/registrarUsuario/">Registrar nuevo usuario</a>
+                        <a class="dropdown-item" href="/registrarEmpleado/">Registrar nuevo empleado</a>
+                        <a class="dropdown-item" href="/mostrarUsuarios/">Mostrar usuarios registrados</a>
+                        <a class="dropdown-item" href="/mostrarEmpleados/">Mostrar empleados registrados</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="container" style="padding: 1%; text-align: center;">
+        <h1>Detalle de reporte de empleado</h1>
+    </div>
+    <div class="container" align="center">
+        {% if datosReporteU %} {{coordenadas}}
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead class="thead-dark">
+
+                    <tr>
+                        <th>Nombre de Usuario atendido</th>
+                        <th>Dirección</th>
+
+                        <!-- <th>Botón detalles</th> -->
+                    </tr>
+                </thead>
+
+                <tr>
+                    <td>{{ datosReporteU.id_usuario }}</td>
+                    <td>Colonia: {{ datosReporteU.colonia }}, Calle: {{ datosReporteU.calle }}, No. interior: {{ datosReporteU.num_interior }}, No. exterior: {{ datosReporteU.num_exterior}} </td>
+                </tr>
+            </table>
+        </div>
+
+        {% else %}
+        <p> No hay reportes de empleados </p>
+        {% endif %}
+
+        <h1>Tabla de materiales</h1>
+        {% if datosMateriales %}
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Material</th>
+                        <th>Cantidad</th>
+
+                    </tr>
+                </thead>
+                {% for reportes in datosMateriales %}
+                <tr>
+                    <td>{{ reportes.material }}</td>
+                    <td>{{ reportes.cantidad }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% else %}
+        <p> No hay Materiales usados</p>
+        {% endif %}
+        <!---->
+    </div>
+    
+<center>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <h1>Foto antes de la reparación</h1>
+            <img src="{{datosReporteU.foto}}" alt="..." class="img-thumbnail" style="width: 400px; height: 300px;">
+        </div>
+        <div class="form-group col-md-6">
+            <h1>Foto después de la reparación</h1>
+            <img src="{{foto}}" alt="..." class="img-thumbnail" style="width: 400px; height: 300px;">
+           
+        </div>
+    </div>
+
+    <h1>Mapa del reporte</h1>
+
+    <div id='map' style='width: 400px; height: 300px;'></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2FwYW1hYWRtaW4iLCJhIjoiY2tpdXUxdHFkMWcwdDJycDRvcHB5bTZzaiJ9.nLxZMCp3BBYXvyh8TuCnqw';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: ['{{longitud}}', '{{latitud}}'], //coordenadas
+            zoom: 20
+        });
+        map.addControl(new mapboxgl.NavigationControl()); //añade los controles
+        map.addControl(new mapboxgl.FullscreenControl()); //añade la pantalla completa
+
+        //marcador el diseño esta arriba  en la etiqueta de style
+        let element = document.createElement('div')
+        element.className = 'marker'
+
+        element.addEventListener('click', () => {
+            window.alert('Estado: {{datosReporteU.estado}} \nPrioridad: {{datosReporteU.prioridad}}\nTipo de anomalía: {{datosReporteU.tipo_anomalia}} ')
+        })
+
+        let marker = new mapboxgl.Marker(element)
+            .setLngLat({
+                lng: '{{longitud}}',
+                lat: '{{latitud}}'
+            })
+            .addTo(map)
+    </script>
+
+
+    <div class="container" style="padding: 1%;">
+        <a href="/reportesEmpleados/"><input type="submit" value="volver" class="btn btn-secondary btn-lg btn-block"></a>
+    </div>
+</center>
+   
+    {% bootstrap_javascript jquery='full' %}
+    {% endblock %}
+</body>
+
+</html>

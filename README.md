@@ -11,3 +11,6 @@ Admin:
 usuario: capamaAdmin
 contraseña: 1234
 correo: valdezz__@hotmail.com
+
+
+metí procfile, readmy y requirements al nivel de manage.py
